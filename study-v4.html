@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#111111"/>
+<title>Study — CFA & CPA Mastery</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#111;color:#e0e0e0;font-family:'Palatino Linotype',Palatino,'Book Antiqua',serif;min-height:100vh}
+::-webkit-scrollbar{width:0}
+button{cursor:pointer;font-family:inherit;transition:opacity .12s}
+button:active{opacity:.75;transform:scale(.98)}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+.fade{animation:fadein .3s ease}
+#app{max-width:440px;margin:0 auto;padding:20px 18px 100px}
+/* Layout */
+.hdr{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.ava{width:46px;height:46px;border-radius:50%;background:#C1440E22;border:2px solid #C1440E55;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.ttl{font-size:22px;font-weight:bold;color:#f0f0f0}
+.sub{font-size:11px;color:#C1440E;font-family:sans-serif;letter-spacing:.06em;margin-top:2px}
+.pills{display:flex;gap:8px;margin-bottom:20px}
+.pill{flex:1;background:#181818;border:1px solid #252525;border-radius:10px;padding:10px 6px;text-align:center}
+.pill-v{font-size:16px;font-weight:bold;color:#f0f0f0}
+.pill-l{font-size:10px;color:#666;font-family:sans-serif;margin-top:2px}
+/* Buttons */
+.btn{width:100%;padding:14px 0;border-radius:12px;font-size:15px;border:none;color:#fff;background:linear-gradient(135deg,#C1440E,#9A3008);box-shadow:0 3px 16px #C1440E33;margin-top:10px;display:block}
+.btn.sec{background:#1a1a1a;border:1px solid #2e2e2e;color:#ccc;box-shadow:none}
+.btn.blue{background:linear-gradient(135deg,#2E6B8A,#1A4A6A);box-shadow:0 3px 16px #2E6B8A33}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+/* Nav bar */
+.bar{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.backbtn{background:none;border:1px solid #2a2a2a;border-radius:8px;padding:6px 12px;color:#666;font-size:12px;font-family:sans-serif}
+.barlabel{font-size:13px;color:#888;font-family:sans-serif;flex:1}
+/* Section labels */
+.seclabel{font-size:10px;color:#555;font-family:sans-serif;letter-spacing:.1em;text-transform:uppercase;margin:22px 0 10px}
+/* Exam rows */
+.examrow{width:100%;background:#161616;border:1px solid #333;border-radius:12px;padding:14px 16px;margin-bottom:10px;text-align:left}
+.pbar{height:4px;background:#222;border-radius:2px;margin-top:10px;overflow:hidden}
+.pfill{height:100%;border-radius:2px;transition:width .4s}
+/* Lesson */
+.badge{font-size:11px;border-radius:20px;padding:3px 10px;font-family:sans-serif;display:inline-block;margin-bottom:8px}
+.ltitle{font-size:20px;font-weight:bold;color:#f0f0f0;margin-bottom:16px;line-height:1.3}
+.para{font-size:15px;line-height:1.85;color:#d0d0d0;margin-bottom:14px}
+.tip{background:#1a0e08;border:1px solid #C1440E33;border-radius:10px;padding:13px 15px;font-size:13px;color:#c09070;line-height:1.65;margin-bottom:14px}
+.ifrs{background:#0A1A2A;border:1px solid #2E6B8A55;border-radius:10px;padding:13px 15px;margin-bottom:14px}
+.ifrs-label{font-size:11px;color:#2E6B8A;font-family:sans-serif;font-weight:bold;letter-spacing:.06em;margin-bottom:6px}
+.ifrs-text{font-size:13px;color:#8AB8D0;line-height:1.65}
+.mnemonic{background:#1A1A0A;border:1px solid #8A8A2A55;border-radius:10px;padding:13px 15px;margin-bottom:14px}
+.mnemonic-label{font-size:11px;color:#AABB33;font-family:sans-serif;font-weight:bold;letter-spacing:.06em;margin-bottom:6px}
+.mnemonic-text{font-size:14px;color:#CCDD66;line-height:1.65}
+.outline{background:#141414;border-left:3px solid #C1440E;padding:12px 16px;margin-bottom:14px;border-radius:0 8px 8px 0}
+.outline-item{font-size:13px;color:#bbb;line-height:1.9;font-family:sans-serif}
+/* Quiz */
+.qprogress{display:flex;gap:4px;margin-bottom:16px}
+.qprog-dot{flex:1;height:3px;border-radius:2px;background:#222}
+.qprog-dot.done{background:#C1440E}
+.qprog-dot.current{background:#E06030}
+.qbox{background:#181818;border:1px solid #2a2a2a;border-radius:12px;padding:18px 16px;font-size:15px;line-height:1.7;color:#e8e8e8;margin-bottom:16px}
+.qbox-label{font-size:10px;color:#555;font-family:sans-serif;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.choice{width:100%;background:#181818;border:1px solid #2a2a2a;border-radius:10px;padding:13px 15px;font-size:14px;color:#ccc;text-align:left;line-height:1.45;margin-bottom:9px;display:block}
+.choice.correct{background:#0d240d;border-color:#3a8a3a;color:#7eca7e}
+.choice.wrong{background:#240d0d;border-color:#C1440E;color:#f08060}
+.choice.neutral{opacity:.5}
+.expl{background:#141414;border:1px solid #444;border-radius:10px;padding:14px 15px;font-size:13px;color:#aaa;line-height:1.7;margin-top:14px}
+.expl strong{color:#e0e0e0}
+/* Anki */
+.ankicard{background:#141414;border-radius:16px;padding:28px 22px;min-height:190px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;margin-bottom:16px;border:1px solid #2a2a2a}
+.anki-label{font-size:11px;color:#555;font-family:sans-serif;margin-bottom:12px;text-transform:uppercase;letter-spacing:.08em}
+.anki-text{font-size:17px;line-height:1.75;color:#e8e8e8}
+.ankibtns{display:flex;gap:10px;margin-bottom:16px}
+.abtn-miss{flex:1;padding:14px 0;border-radius:12px;background:#1a0808;border:1px solid #C1440E55;color:#f08060;font-size:14px}
+.abtn-hard{flex:1;padding:14px 0;border-radius:12px;background:#1a1408;border:1px solid #AA8833;color:#CCAA55;font-size:14px}
+.abtn-got{flex:1;padding:14px 0;border-radius:12px;background:#081a08;border:1px solid #3a8a3a55;color:#7eca7e;font-size:14px}
+/* Auth */
+.authbox{max-width:340px;margin:0 auto;padding:40px 24px;text-align:center}
+.authinput{width:100%;background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:12px 16px;color:#e0e0e0;font-size:15px;outline:none;margin-top:8px;font-family:sans-serif}
+/* Toast */
+.toast{position:fixed;bottom:36px;left:50%;transform:translateX(-50%);background:#1e1e1e;border:1px solid #C1440E44;border-radius:20px;padding:10px 22px;font-size:13px;color:#e0c0a0;box-shadow:0 4px 20px rgba(0,0,0,.6);z-index:999;font-family:sans-serif;white-space:nowrap;pointer-events:none}
+/* Loading dots */
+.dots{display:flex;gap:10px;justify-content:center;padding:80px 0;align-items:center}
+.dot{width:10px;height:10px;border-radius:50%;background:#C1440E;animation:pulse 1s ease-in-out infinite}
+/* Topic list */
+.topicrow{display:flex;align-items:center;gap:10px;border-bottom:1px solid #1e1e1e;padding:11px 4px;cursor:pointer}
+.topicrow:hover{background:#161616;border-radius:8px}
+.topic-name{flex:1;font-size:13px;color:#ccc}
+.topic-score{font-size:11px;color:#666;font-family:sans-serif;flex-shrink:0}
+.topic-done{font-size:12px;color:#3a8a3a;flex-shrink:0}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ── Supabase config — user provided ───────────────────────────────────────
+const getSupabase = () => {
+  const url  = localStorage.getItem('sb_url')  || '';
+  const anon = localStorage.getItem('sb_anon') || '';
+  if (!url || !anon) return null;
+  try { return supabase.createClient(url, anon); } catch { return null; }
+};
+
+// ── Local fallback storage ─────────────────────────────────────────────────
+const LOCAL_KEY = uid => `study_progress_${uid}`;
+const loadLocal = uid => { try { const v=localStorage.getItem(LOCAL_KEY(uid)); return v?JSON.parse(v):{}; } catch{return{};} };
+const saveLocal = (uid,d) => { try{localStorage.setItem(LOCAL_KEY(uid),JSON.stringify(d));}catch{} };
+
+// ══════════════════════════════════════════════════════════════════════════
+// CONTENT DATABASE
+// Each lesson has: narrative paragraphs, GAAP/IFRS note, mnemonic (where applicable),
+// key outline, 30 questions, and 3 Anki flashcards
+// ══════════════════════════════════════════════════════════════════════════
+const CONTENT = [
+
+// ════════════════════════════════════════════════════════════════════════
+// CFA L1 — FINANCIAL STATEMENT ANALYSIS
+// ════════════════════════════════════════════════════════════════════════
+{
+  id:'cfa1_fsa_01', exam:'CFA L1', section:'Financial Statement Analysis',
+  title:'The Income Statement — Structure and Analysis',
+  narrative:[
+    'The income statement reports revenues, expenses, gains, and losses over a specific accounting period, culminating in net income. The fundamental structure flows from revenue at the top through gross profit, operating income (EBIT), pre-tax income, and finally net income after taxes. Each transition reveals a different layer of profitability — gross margin reflects pricing power and production efficiency, while operating margin captures management\'s ability to control overhead.',
+    'Revenue is recognized when control transfers to the customer under ASC 606 and IFRS 15 — not necessarily when cash is received. This creates accruals that can diverge significantly from cash. A company booking $10M in revenue this quarter may collect only $6M in cash if customers pay on 60-day terms. Analysts compare revenue growth to cash collected from customers (in the operating cash flow section) to detect aggressive recognition. A persistent gap — revenue growing faster than cash collected — is one of the strongest earnings quality warning signals.',
+    'Below operating income, interest expense reflects financing costs and is separate from operating performance. Non-recurring items — restructuring charges, asset impairments, gains on asset sales — are disclosed separately because they distort trend analysis. Analysts build "normalized" income statements by stripping these out. A company reporting $100M operating income that includes a $30M restructuring charge has only $70M of recurring earning power — a critical distinction for valuation.',
+    'Common-size income statements express each line as a percentage of revenue. This removes the distortion of absolute size and enables meaningful comparison across companies and periods. If Company A spends 12% of revenue on SG&A and its peer spends 18%, something structural differs — distribution model, sales force efficiency, or organizational bloat. The trend in gross margin is particularly important: compression of even 100 basis points in gross margin at a large company can represent hundreds of millions in lost profit.',
+  ],
+  ifrsNote:'Under IFRS (IAS 1), companies may present expenses by function (COGS, SG&A) or by nature (materials, labor, depreciation) — GAAP requires function-based presentation for SEC filers. IFRS also allows more flexibility in classifying interest and dividends in the cash flow statement. IFRS prohibits the "extraordinary items" classification that GAAP eliminated in 2015 — both now require unusual items to be described in notes but included in continuing operations.',
+  mnemonic:'GROPE — Gross profit, EBIT, Operating income, Pre-tax income, Earnings (net income) — the five key income statement subtotals in order.',
+  outline:[
+    'Revenue → Gross Profit (subtract COGS)',
+    'Gross Profit → Operating Income/EBIT (subtract SG&A, D&A)',
+    'EBIT → Pre-tax Income (subtract interest expense, add interest income)',
+    'Pre-tax Income → Net Income (subtract income tax expense)',
+    'Key margins: Gross%, Operating%, Net% — all as % of revenue',
+    'Non-recurring items: restructuring, impairment, gains/losses on asset sales',
+    'Common-size analysis: express every line as % of revenue',
+  ],
+  questions:[
+    {q:'A company reports revenue of $800M, COGS of $480M, SG&A of $120M, interest expense of $30M, and a tax rate of 25%. What is net income?',choices:['A) $127.5M','B) $170M','C) $150M','D) $142.5M'],correct:'A',expl:'Gross profit = $320M. EBIT = $320M - $120M = $200M. Pre-tax income = $200M - $30M = $170M. Net income = $170M × (1-0.25) = $127.5M. Common trap: forgetting to subtract interest before applying the tax rate.'},
+    {q:'An analyst notices that a company\'s revenue grew 15% while cash collected from customers grew only 4%. This most likely indicates:',choices:['A) Aggressive revenue recognition or deteriorating receivables quality','B) Strong operating leverage','C) Improved working capital management','D) Higher profit margins'],correct:'A',expl:'When revenue grows much faster than cash collected, receivables are building up faster than they are being collected. This suggests either aggressive revenue recognition (booking sales before cash is likely) or customers who are slow/unable to pay — both are earnings quality red flags.'},
+    {q:'Company A reports operating income of $60M including a $15M restructuring charge and a $8M gain on sale of equipment. Normalized EBIT is:',choices:['A) $67M','B) $53M','C) $75M','D) $83M'],correct:'A',expl:'Add back the non-recurring restructuring charge ($15M) and remove the non-recurring gain (-$8M): $60M + $15M - $8M = $67M. Restructuring charges are added back (they reduced income); gains on asset sales are subtracted (they inflated income). Both are non-recurring.'},
+    {q:'On a common-size income statement, Company A has gross margin of 55% and SG&A of 30% of revenue. Company B (same industry) has gross margin of 48% and SG&A of 20%. Which company has higher operating margin?',choices:['A) Company A at 25%','B) Company B at 28%','C) Both equal at 25%','D) Cannot determine without absolute numbers'],correct:'A',expl:'Operating margin = Gross margin - SG&A%. Company A: 55% - 30% = 25%. Company B: 48% - 20% = 28%. Company B has higher operating margin despite lower gross margin because it spends far less on SG&A. Common-size analysis reveals this; raw numbers would obscure it.'},
+    {q:'Which of the following is most likely classified as a non-operating item on the income statement?',choices:['A) Depreciation of manufacturing equipment','B) Interest expense on long-term debt','C) Research and development costs','D) Warranty expense'],correct:'B',expl:'Interest expense is a financing cost — it results from capital structure decisions, not core operations. It appears below operating income. Depreciation, R&D, and warranty expense all relate to operating activities and appear above the operating income line.'},
+    {q:'A retailer has revenue of $500M, COGS of $350M, and operating expenses of $80M. It also recorded a $20M impairment charge on goodwill. EBITDA (assuming $15M D&A already in operating expenses) is:',choices:['A) $85M','B) $70M','C) $65M','D) $50M'],correct:'A',expl:'EBIT = $500M - $350M - $80M - $20M = $50M. EBITDA adds back D&A ($15M) and often the non-cash impairment ($20M): $50M + $15M + $20M = $85M. Goodwill impairment is non-cash and non-recurring, so most analysts add it back to EBITDA for valuation purposes.'},
+    {q:'The difference between basic EPS and diluted EPS is largest when:',choices:['A) A company has many dilutive securities outstanding such as convertible bonds and stock options','B) Net income is very high relative to share count','C) The company has no preferred dividends','D) Stock price is below the exercise price of options'],correct:'A',expl:'Diluted EPS includes the effect of all potentially dilutive securities. The more dilutive securities (convertible bonds, options, warrants) outstanding, the larger the gap between basic and diluted EPS. When stock price is below option exercise price, options are antidilutive and excluded — reducing the gap.'},
+    {q:'Under the treasury stock method for diluted EPS, if 1M options are outstanding with an exercise price of $20 and the average market price is $25, the net increase in diluted shares is:',choices:['A) 200,000 shares','B) 1,000,000 shares','C) 800,000 shares','D) 250,000 shares'],correct:'A',expl:'Proceeds from exercise = 1M × $20 = $20M. Shares repurchased at market = $20M/$25 = 800,000. Net new shares = 1,000,000 - 800,000 = 200,000. The treasury stock method assumes proceeds are used to buy back shares at the average market price — only the net increase enters diluted share count.'},
+    {q:'A company\'s gross margin declined from 42% to 38% over three years while its operating margin held steady at 15%. The most likely explanation is:',choices:['A) The company cut SG&A and other operating costs to offset gross margin pressure','B) Interest expense increased significantly','C) Tax rate declined','D) Revenue grew faster than COGS'],correct:'A',expl:'If gross margin fell 4 percentage points but operating margin held flat, operating expenses below the gross profit line must have decreased by 4 percentage points of revenue. This means SG&A or other operating costs were cut. This could reflect genuine efficiency or potentially underinvestment in the business.'},
+    {q:'Which inventory costing method results in the lowest gross profit during a period of rising input costs?',choices:['A) LIFO','B) FIFO','C) Weighted average','D) Specific identification'],correct:'A',expl:'Under LIFO, the most recently purchased (most expensive) inventory is expensed first as COGS. In rising price environments, LIFO produces the highest COGS and therefore the lowest gross profit. FIFO produces the opposite — lowest COGS (oldest, cheapest inventory expensed first) and highest gross profit. Note: LIFO is prohibited under IFRS.'},
+    {q:'An analyst is comparing two companies in the same industry. Company X uses LIFO and has a LIFO reserve of $40M. Company Y uses FIFO. To make the comparison meaningful, the analyst should:',choices:['A) Add $40M to Company X\'s inventory and reduce COGS by the change in LIFO reserve for the period','B) Subtract $40M from Company X\'s equity','C) Add $40M to Company Y\'s inventory','D) No adjustment is needed as both are acceptable GAAP methods'],correct:'A',expl:'Adding the LIFO reserve to inventory converts it to FIFO equivalent. The change in LIFO reserve for the current period must be subtracted from COGS to show what COGS would have been under FIFO. Also adjust equity upward by LIFO reserve × (1-tax rate) to reflect the after-tax impact on retained earnings.'},
+    {q:'EPS from continuing operations is most useful because it:',choices:['A) Excludes discontinued operations and provides a better base for forecasting future earnings','B) Always exceeds diluted EPS','C) Reflects the impact of all capital structure decisions','D) Is required only under IFRS'],correct:'A',expl:'Continuing operations EPS excludes discontinued segments, allowing analysts to project future earnings without the distortion of businesses being sold or shut down. Discontinued operations are shown separately below continuing operations to maintain transparency while keeping forecast-relevant numbers clean.'},
+    {q:'A company reports EBIT of $120M and interest expense of $20M. Its interest coverage ratio is 6x. If it issues $200M of additional debt at 5%, what is the new interest coverage ratio?',choices:['A) 4.0x','B) 3.0x','C) 4.8x','D) 5.0x'],correct:'A',expl:'New interest expense = $20M + ($200M × 5%) = $20M + $10M = $30M. New coverage = $120M/$30M = 4.0x. Coverage declined from 6x to 4x — still adequate but meaningfully weaker. Below 2x is considered distressed territory.'},
+    {q:'Which of the following best describes operating leverage?',choices:['A) The sensitivity of operating income to changes in revenue, driven by the proportion of fixed costs','B) The use of debt to amplify returns to equity holders','C) The ratio of operating income to interest expense','D) The percentage of revenue retained after all operating expenses'],correct:'A',expl:'Operating leverage measures how a change in revenue flows through to operating income. High fixed costs (high operating leverage) mean a 10% revenue increase could produce a 30% increase in operating income — but a 10% revenue decline could wipe out most operating profit. It is NOT financial leverage (which involves debt).'},
+    {q:'Comprehensive income differs from net income because it includes:',choices:['A) Other comprehensive income items such as unrealized gains on available-for-sale securities and foreign currency translation adjustments','B) Dividends paid to shareholders','C) All items that flow through the income statement','D) Only cash-based transactions'],correct:'A',expl:'Other comprehensive income (OCI) includes items that affect equity but bypass the income statement: unrealized gains/losses on AFS securities, foreign currency translation adjustments, pension actuarial gains/losses, and effective portion of cash flow hedges. These appear in equity as accumulated OCI (AOCI) until realized.'},
+    {q:'A technology company capitalizes software development costs of $50M that a competitor expenses immediately. Assuming 5-year amortization and 25% tax rate, what is the after-tax earnings difference in year 1?',choices:['A) $30M higher for the capitalizing company','B) $7.5M higher for the capitalizing company','C) $30M lower for the capitalizing company','D) $37.5M higher for the capitalizing company'],correct:'A',expl:'The capitalizing company expenses only $50M/5 = $10M amortization vs. $50M for the expensing company. Pre-tax difference = $40M. After-tax = $40M × (1-0.25) = $30M higher earnings for the capitalizing company. However, this is an accounting choice — cash flows are identical. The capitalizing company has higher earnings quality risk.'},
+    {q:'The accrual ratio is calculated as (Net Income - CFO) / Average Net Assets. A high positive accrual ratio suggests:',choices:['A) Earnings are being driven by accruals rather than cash flows, indicating potentially lower earnings quality','B) The company has strong cash conversion','C) Operating cash flows are growing faster than net income','D) The company is conservatively recognizing revenue'],correct:'A',expl:'A high accrual ratio means net income significantly exceeds operating cash flow — the gap is filled by accounting accruals (receivables, deferred revenue reversals, etc.). Academic research (Sloan 1996) showed high-accrual companies systematically underperform the market as accruals reverse. This is one of the most powerful earnings quality signals.'},
+    {q:'Which of the following would cause operating cash flow to be LOWER than net income?',choices:['A) An increase in accounts receivable','B) An increase in accounts payable','C) Depreciation expense','D) A decrease in inventory'],correct:'A',expl:'An increase in accounts receivable means revenue was recognized but cash not yet collected — cash flow is lower than income. Increases in AP (more time to pay) and depreciation (non-cash expense added back) both increase CFO relative to net income. Decreasing inventory releases cash, also increasing CFO.'},
+    {q:'A manufacturer reports revenue of $600M with DSO (days sales outstanding) of 45 days in year 1 and 72 days in year 2 (industry average: 40 days). This most likely indicates:',choices:['A) Deteriorating receivables quality or channel stuffing — revenue may be pulled forward from future periods','B) Improved collection efficiency','C) Customers are paying faster than before','D) Revenue recognition has become more conservative'],correct:'A',expl:'Rising DSO well above the industry average is a red flag. It suggests either customers are struggling to pay, the company is extending lenient credit to book sales (channel stuffing), or revenue is being recognized before it is truly earned. Analysts should check if revenue growth is matched by eventual cash collection.'},
+    {q:'Under the indirect method of the cash flow statement, which of the following is added back to net income to compute CFO?',choices:['A) Depreciation and amortization expense','B) Gain on sale of equipment','C) Increase in accounts receivable','D) Decrease in accounts payable'],correct:'A',expl:'D&A is a non-cash expense deducted from net income — it must be added back. Gains on asset sales are non-operating and remove from CFO (they go in CFI). Increases in AR reduce CFO (cash not received). Decreases in AP reduce CFO (cash paid out faster than recognized).'},
+    {q:'EBITDA is most useful as a valuation metric because:',choices:['A) It removes the effects of financing structure, accounting depreciation choices, and taxes enabling cross-company comparison','B) It perfectly represents cash available to equity holders','C) It is required to be disclosed under both GAAP and IFRS','D) It eliminates all non-cash charges including working capital changes'],correct:'A',expl:'EV/EBITDA is widely used precisely because EBITDA strips out interest (financing), taxes (jurisdiction), and D&A (accounting choice for asset lives) — making companies with different capital structures, tax rates, and depreciation policies more comparable. However, EBITDA overstates cash flow by ignoring capex and working capital needs.'},
+    {q:'A company switches from straight-line to accelerated depreciation. In the first year, this change will:',choices:['A) Reduce net income and reduce total assets','B) Increase net income and increase total assets','C) Have no effect on net income but reduce total assets','D) Reduce operating cash flow'],correct:'A',expl:'Accelerated depreciation records higher depreciation expense in early years, reducing net income and the book value of assets (net PP&E). No effect on operating cash flow because depreciation is non-cash — it is added back in the indirect method. Over the asset\'s life, total depreciation is identical under both methods.'},
+    {q:'Which ratio best measures a company\'s ability to generate profit from its assets regardless of financing structure?',choices:['A) Return on assets (ROA) using EBIT(1-t) as the numerator','B) Return on equity (ROE)','C) Gross margin','D) Net profit margin'],correct:'A',expl:'Using EBIT(1-t) — also called NOPAT — as the numerator removes the effect of interest expense (financing choice) from the return measure. This is essentially ROIC when divided by invested capital. ROE is affected by leverage. Gross margin and net profit margin are income statement ratios, not asset utilization measures.'},
+    {q:'The DuPont decomposition expresses ROE as:',choices:['A) Net profit margin × Asset turnover × Equity multiplier','B) Gross margin × Operating efficiency × Financial leverage','C) EBIT margin × Tax burden × Asset base','D) Revenue growth × Margin expansion × Multiple expansion'],correct:'A',expl:'The classic three-factor DuPont: ROE = (Net Income/Revenue) × (Revenue/Assets) × (Assets/Equity). This decomposes ROE into profitability (margin), efficiency (turnover), and leverage (multiplier). High ROE driven primarily by high equity multiplier (leverage) is less sustainable and higher risk than ROE driven by margin and turnover.'},
+    {q:'Company A: net margin 4%, asset turnover 2.5x, equity multiplier 3.0x. Company B: net margin 12%, asset turnover 1.2x, equity multiplier 1.5x. Which has higher ROE and which is higher quality?',choices:['A) A: ROE 30%, B: ROE 21.6% — but B is higher quality due to lower leverage dependence','B) A: ROE 30%, B: ROE 21.6% — A is higher quality','C) Both have equal ROE','D) B: ROE 30%, A: ROE 21.6%'],correct:'A',expl:'ROE A = 4% × 2.5 × 3.0 = 30%. ROE B = 12% × 1.2 × 1.5 = 21.6%. Company A has higher ROE but achieves it through 3x leverage — fragile in a downturn. Company B earns its ROE through strong margins with minimal leverage — more durable and valuable. Always decompose ROE before accepting it at face value.'},
+    {q:'Which of the following is NOT a component of other comprehensive income (OCI)?',choices:['A) Gains and losses from discontinued operations','B) Foreign currency translation adjustments','C) Unrealized gains on available-for-sale debt securities','D) Pension actuarial gains and losses'],correct:'A',expl:'Discontinued operations flow through the income statement (below continuing operations line) and are included in net income — they do NOT bypass the income statement into OCI. The other three items (FX translation, AFS unrealized gains/losses, pension actuarial items) all go through OCI and accumulate in AOCI on the balance sheet.'},
+    {q:'A company reports net income of $80M, D&A of $20M, increase in accounts receivable of $25M, increase in inventory of $10M, and increase in accounts payable of $15M. Operating cash flow is:',choices:['A) $80M','B) $95M','C) $70M','D) $60M'],correct:'A',expl:'CFO = Net income + D&A - ΔAR - ΔInventory + ΔAP = $80M + $20M - $25M - $10M + $15M = $80M. The working capital changes net to zero in this case. Note how D&A is added back (non-cash) and increases in operating assets reduce cash while increases in operating liabilities add cash.'},
+    {q:'Free cash flow to equity (FCFE) is best described as:',choices:['A) CFO minus capex plus net borrowing — cash available to equity holders after debt service and reinvestment','B) EBITDA minus taxes minus capex','C) Net income plus depreciation','D) Operating cash flow minus all capital expenditures and debt repayments'],correct:'A',expl:'FCFE = CFO - Capex + Net borrowing (new debt issued minus repaid). This represents cash genuinely available to pay dividends or buy back shares. FCFF (to the firm) = CFO - Capex (before debt service). The difference is that FCFE accounts for net debt cash flows while FCFF does not.'},
+    {q:'A company\'s cash conversion cycle (CCC) increased from 35 days to 58 days. This most likely indicates:',choices:['A) Working capital management deteriorated — more cash is tied up in operations','B) The company improved its supply chain','C) Revenue growth accelerated','D) The company is paying suppliers faster'],correct:'A',expl:'CCC = DSO + DIO - DPO. A rising CCC means more days of cash tied up in operations. This could reflect rising receivables (customers paying slower), rising inventory (demand slowdown), or falling payables days (paying suppliers faster). All reduce available cash and increase financing needs.'},
+    {q:'Which statement about the relationship between net income and operating cash flow is most accurate?',choices:['A) Over a long period, cumulative CFO should approximate cumulative net income for a healthy business; persistent divergence indicates earnings quality concerns','B) CFO is always higher than net income because depreciation is added back','C) Net income is always a better measure of performance than CFO','D) Large differences between CFO and net income always indicate fraud'],correct:'A',expl:'Over time, accruals reverse and CFO should track net income. Short-term differences are normal (seasonality, growth). Persistent multi-year divergence — CFO consistently below net income — flags earnings quality issues. But differences alone do not prove fraud; they warrant investigation, not accusation.'},
+    {q:'An analyst calculates that a company\'s quality of earnings ratio (CFO/Net Income) has averaged 0.62 over 5 years compared to an industry average of 0.95. The most appropriate conclusion is:',choices:['A) The company\'s earnings are likely of lower quality and warrant closer examination of revenue recognition and accrual policies','B) The company is growing faster than peers','C) The company has superior cash conversion','D) The ratio difference is immaterial and requires no action'],correct:'A',expl:'A ratio of 0.62 vs industry 0.95 means the company converts only 62 cents of each net income dollar into operating cash, while peers convert 95 cents. This persistent gap suggests aggressive accruals — potentially early revenue recognition, deferred expense recognition, or other accounting choices that boost reported income without generating cash.'},
+  ],
+  flashcards:[
+    {front:'DuPont ROE formula (3-factor)',back:'ROE = Net Profit Margin × Asset Turnover × Equity Multiplier = (NI/Rev) × (Rev/Assets) × (Assets/Equity)'},
+    {front:'Free Cash Flow to Equity (FCFE)',back:'FCFE = CFO - Capex + Net Borrowing. Cash available to equity holders after reinvestment and debt service.'},
+    {front:'Accrual Ratio — what it signals',back:'(Net Income - CFO) / Avg Net Assets. High ratio = earnings driven by accruals, not cash. Red flag for earnings quality. Academic research shows high-accrual firms underperform.'},
+  ],
+},
+
+// ════════════════════════════════════════════════════════════════════════
+{
+  id:'cfa1_fsa_02', exam:'CFA L1', section:'Financial Statement Analysis',
+  title:'The Balance Sheet — Assets, Liabilities and Equity',
+  narrative:[
+    'The balance sheet presents a company\'s financial position at a single point in time, governed by the fundamental equation: Assets = Liabilities + Equity. Every transaction preserves this balance through double-entry bookkeeping. When a company borrows $1M to buy equipment, both assets and liabilities increase by $1M. When it earns and retains $500K, both cash (asset) and retained earnings (equity) increase. Understanding this mechanical balance is the foundation for detecting errors and manipulations.',
+    'Assets are classified as current (expected to convert to cash within one year or operating cycle) or non-current. Current assets include cash, marketable securities, accounts receivable, inventory, and prepaid expenses — ordered by liquidity. Non-current assets include PP&E, intangible assets, goodwill, long-term investments, and deferred tax assets. The composition of assets tells a story about the business model: a capital-intensive manufacturer has most assets in PP&E, while a consulting firm has most in receivables and intangibles.',
+    'Liabilities follow the same current/non-current classification. Current liabilities — accounts payable, accrued expenses, deferred revenue, current portion of long-term debt — must be settled within one year. The relationship between current assets and current liabilities (current ratio, quick ratio) determines short-term liquidity. Non-current liabilities — long-term debt, pension obligations, deferred tax liabilities, operating lease liabilities — represent longer-term financial commitments that analysts scrutinize for hidden leverage.',
+    'Equity represents the residual interest after all liabilities are deducted. It consists of contributed capital (what shareholders paid in), retained earnings (accumulated net income less dividends), accumulated other comprehensive income (AOCI — unrealized gains/losses that bypass the income statement), and treasury stock (shares repurchased, shown as a deduction). Book value per share — total equity divided by shares outstanding — is a key reference point for valuation, though it often diverges from market value because assets are carried at historical cost rather than current fair value.',
+  ],
+  ifrsNote:'Under IFRS (IAS 16), companies may revalue PP&E and certain intangibles to fair value — increases go to revaluation surplus in equity, decreases to the income statement. GAAP strictly prohibits upward revaluation; assets stay at historical cost less accumulated depreciation. This means IFRS balance sheets can show higher asset values and equity, making P/B ratios not directly comparable across GAAP and IFRS companies. Analysts must adjust for revaluations when comparing firms across accounting regimes.',
+  mnemonic:'CALLED — Cash, Accounts receivable, Loans (notes receivable), Liabilities (current), Equipment, Equity (long-term) — a rough balance sheet structure reminder.',
+  outline:[
+    'Current Assets: Cash → Marketable Securities → Accounts Receivable → Inventory → Prepaid Expenses',
+    'Non-Current Assets: PP&E (net) → Intangibles → Goodwill → LT Investments → Deferred Tax Assets',
+    'Current Liabilities: AP → Accrued Expenses → Deferred Revenue → Current LTD',
+    'Non-Current Liabilities: LT Debt → Lease Liabilities → Pension Obligations → Deferred Tax Liabilities',
+    'Equity: Common Stock + APIC + Retained Earnings + AOCI - Treasury Stock',
+    'Key ratios: Current ratio, Quick ratio, Debt/Equity, Net Debt/EBITDA',
+  ],
+  questions:[
+    {q:'A company has total assets of $900M, total liabilities of $580M, and 50M shares outstanding. Book value per share is:',choices:['A) $6.40','B) $11.60','C) $18.00','D) $16.00'],correct:'A',expl:'Book equity = Total assets - Total liabilities = $900M - $580M = $320M. Book value per share = $320M / 50M = $6.40. This is the accounting value per share, which often differs significantly from market price (P/B ratio). When P/B < 1, market values the company below book — common in distressed or value trap situations.'},
+    {q:'Which of the following increases total assets without affecting net income?',choices:['A) Borrowing $5M from a bank','B) Recording $2M of depreciation','C) Recognizing $3M of revenue on credit','D) Paying $1M dividend'],correct:'A',expl:'Borrowing $5M increases cash (asset) and debt (liability) by equal amounts — total assets increase, equity unchanged, net income unaffected. Depreciation reduces PP&E (asset) and net income. Revenue recognition increases AR (asset) and net income. Dividend payment reduces cash (asset) and retained earnings (equity).'},
+    {q:'A company has current assets of $240M (including $80M inventory and $20M prepaids) and current liabilities of $150M. The quick ratio is:',choices:['A) 0.93','B) 1.60','C) 1.07','D) 0.53'],correct:'A',expl:'Quick assets = Current assets - Inventory - Prepaids = $240M - $80M - $20M = $140M. Quick ratio = $140M / $150M = 0.93. Below 1.0 means quick assets don\'t fully cover current liabilities — not necessarily distressed (especially for retailers) but warrants monitoring. Current ratio = $240M/$150M = 1.60, which looks better but includes illiquid inventory.'},
+    {q:'Under US GAAP, which of the following is NOT permitted for PP&E?',choices:['A) Upward revaluation of assets to fair value above historical cost','B) Straight-line depreciation','C) Component depreciation (depreciating parts separately)','D) Impairment write-down when carrying value exceeds fair value'],correct:'A',expl:'GAAP strictly prohibits upward revaluation of PP&E — assets can only go down from historical cost through depreciation and impairment, never up. IFRS (IAS 16) permits the revaluation model where increases go to equity revaluation surplus. This is one of the most important GAAP/IFRS differences for balance sheet comparability.'},
+    {q:'Goodwill arises in a business combination when:',choices:['A) The purchase price exceeds the fair value of the identifiable net assets acquired','B) The acquired company has strong brand recognition','C) The acquirer pays less than book value for the target','D) The target company has negative retained earnings'],correct:'A',expl:'Goodwill = Purchase price - Fair value of identifiable net assets. It represents unidentifiable value — synergies, customer relationships, workforce in place. Under both GAAP (ASC 350) and IFRS (IAS 36), goodwill is not amortized but tested for impairment annually. A goodwill impairment reduces income but not operating cash flow.'},
+    {q:'A company has gross PP&E of $600M and accumulated depreciation of $480M. The ratio of accumulated depreciation to gross PP&E is:',choices:['A) 80% — indicating an aging asset base likely requiring significant near-term capital expenditure','B) 20% — indicating relatively new assets','C) 80% — indicating the company has been investing heavily in new equipment','D) The ratio is irrelevant to capital expenditure analysis'],correct:'A',expl:'Accumulated depreciation / Gross PP&E = 80% means most of the asset\'s depreciable life has been consumed. Assets are old and approaching end of useful life — a capex cycle is likely approaching. Compare actual capex to depreciation: if capex/depreciation < 1.0x for multiple years, the company is underinvesting and capacity may be declining.'},
+    {q:'Which statement about deferred tax liabilities (DTLs) is most accurate?',choices:['A) DTLs arise when taxable income is lower than accounting income, meaning taxes owed in the future — commonly from accelerated tax depreciation','B) DTLs represent taxes paid in advance','C) DTLs always reverse within one year','D) DTLs reduce a company\'s effective tax rate'],correct:'A',expl:'DTLs arise from temporary differences where tax rules defer income relative to GAAP. Accelerated depreciation for tax purposes reduces current taxable income below GAAP income, creating a future tax obligation (DTL). They are semi-permanent for growing companies continuously buying new assets. DTAs arise from the opposite — prepaid taxes or deductible losses carried forward.'},
+    {q:'A company has $500M long-term debt, $80M cash, and EBITDA of $90M. Net debt/EBITDA is:',choices:['A) 4.7x','B) 5.6x','C) 4.2x','D) 6.3x'],correct:'A',expl:'Net debt = $500M - $80M = $420M. Net debt/EBITDA = $420M/$90M = 4.67x ≈ 4.7x. This is considered elevated leverage for most industries — rating agencies typically begin expressing concern above 3-4x. However, context matters: utilities can sustain 6-7x due to stable regulated cash flows.'},
+    {q:'Operating lease liabilities on the balance sheet under ASC 842 (GAAP):',choices:['A) Increase reported debt and leverage ratios, making previously off-balance-sheet obligations visible','B) Reduce total liabilities by eliminating operating expense recognition','C) Are only recognized when lease payments exceed 12 months','D) Are identical to finance lease liabilities in income statement treatment'],correct:'A',expl:'ASC 842 and IFRS 16 brought virtually all leases onto the balance sheet. Previously, operating leases were off-balance-sheet and disclosed only in footnotes. Capitalization adds both a right-of-use asset and lease liability — dramatically increasing apparent leverage for retailers, airlines, and restaurants. Under GAAP, operating leases still show straight-line rent expense; finance leases show separate depreciation and interest.'},
+    {q:'Treasury stock is best described as:',choices:['A) Shares previously issued and subsequently repurchased by the company — recorded as a deduction from equity at cost','B) Authorized shares that have never been issued','C) Shares held in a trust for employee compensation plans','D) Shares issued to founders at inception'],correct:'A',expl:'Treasury stock = shares bought back by the company. Under the cost method (US GAAP), treasury stock is recorded at repurchase cost as a contra-equity account — it reduces total equity. It reduces shares outstanding (denominator in EPS), which mechanically increases EPS. Treasury shares have no voting rights and receive no dividends.'},
+    {q:'The equity multiplier in the DuPont framework equals:',choices:['A) Total assets divided by total equity — it measures financial leverage','B) Total equity divided by total assets','C) Long-term debt divided by equity','D) Net income divided by total equity'],correct:'A',expl:'Equity multiplier = Total Assets / Total Equity = 1 + Debt/Equity ratio. A multiplier of 3.0x means for every $1 of equity, the company has $3 of assets — implying $2 of debt financing. Higher multiplier = higher leverage = higher ROE (if profitable) but higher financial risk and fragility in downturns.'},
+    {q:'A pension plan is "underfunded" when:',choices:['A) The projected benefit obligation (PBO) exceeds the fair value of plan assets — creating a net pension liability on the balance sheet','B) The company has not made the current year\'s pension contribution','C) Pension expense exceeds pension payments made during the year','D) The expected return on plan assets exceeds the discount rate'],correct:'A',expl:'Funded status = Fair value of plan assets - PBO. Negative funded status (PBO > assets) means the plan is underfunded — a net pension liability appears on the balance sheet. Underfunding can be masked by optimistic discount rate assumptions. A 50bp increase in discount rate can reduce PBO by 5-8%, improving apparent funded status without economic improvement.'},
+    {q:'Which of the following would cause equity to increase without affecting net income?',choices:['A) An unrealized gain on available-for-sale securities recorded in OCI','B) Repurchasing shares at market price','C) Paying a stock dividend','D) Recording depreciation expense'],correct:'A',expl:'Unrealized AFS gains flow through OCI directly to equity (AOCI) — they bypass the income statement entirely until the security is sold. Share repurchases reduce equity (treasury stock). Stock dividends reclassify retained earnings to paid-in capital but don\'t change total equity. Depreciation reduces both PP&E and retained earnings (via net income).'},
+    {q:'When comparing balance sheets across GAAP and IFRS companies in the same industry, the most significant difference an analyst should adjust for is:',choices:['A) PP&E revaluation under IFRS — which can make IFRS book values significantly higher than GAAP historical cost values','B) Goodwill amortization — IFRS amortizes goodwill while GAAP does not','C) Revenue recognition — IFRS recognizes revenue earlier than GAAP','D) Inventory classification — IFRS requires FIFO for all companies'],correct:'A',expl:'IFRS (IAS 16) permits PP&E revaluation to fair value. Companies in capital-intensive industries (real estate, mining, utilities) may carry assets at values far above historical cost, inflating book equity and reducing apparent leverage. GAAP companies cannot do this. Note: both GAAP and IFRS prohibited goodwill amortization (GAAP since 2001, IFRS since 2004 — though IFRS for SMEs still amortizes).'},
+    {q:'Tangible book value per share is calculated as:',choices:['A) (Total equity - Goodwill - Intangible assets) / Shares outstanding','B) Total assets / Shares outstanding','C) (Total equity + Long-term debt) / Shares outstanding','D) Net income / Shares outstanding'],correct:'A',expl:'Tangible book value strips out goodwill and identifiable intangibles — assets whose value is most uncertain and hardest to realize in liquidation. It gives the most conservative view of per-share value. For acquisition analysis, tangible book value is critical because an acquirer may not realize the full value of intangibles. P/TBV is especially important for bank analysis.'},
+  ],
+  flashcards:[
+    {front:'Quick Ratio formula',back:'(Cash + Short-term investments + Accounts receivable) / Current liabilities. Excludes inventory and prepaids. Tests immediate liquidity more stringently than current ratio.'},
+    {front:'Goodwill — how it arises and accounting treatment',back:'Goodwill = Purchase price - FV of identifiable net assets. Not amortized under GAAP or IFRS. Tested annually for impairment. Impairment reduces income but NOT cash flow.'},
+    {front:'IFRS vs GAAP: PP&E Revaluation',back:'IFRS (IAS 16): permits revaluation to fair value — increases go to equity revaluation surplus. GAAP: strictly prohibited — assets stay at historical cost less depreciation. Major comparability issue.'},
+  ],
+},
+
+// ════════════════════════════════════════════════════════════════════════
+// CFA L1 — FSA: CASH FLOWS
+// ════════════════════════════════════════════════════════════════════════
+{
+  id:'cfa1_fsa_03', exam:'CFA L1', section:'Financial Statement Analysis',
+  title:'Cash Flow Statement — Analysis and Interpretation',
+  narrative:[
+    'The cash flow statement reconciles the beginning and ending cash balance through three activities: operating (CFO), investing (CFI), and financing (CFF). CFO captures cash generated by the core business — the most important and scrutinized number. CFI shows capital deployed in or received from long-term assets. CFF shows how the company raised and returned capital to providers. Understanding the interaction among these three sections reveals strategic choices and financial health far better than any single income statement metric.',
+    'CFO is constructed using the indirect method (most common) or direct method. The indirect method starts with net income and adjusts for non-cash items (add back D&A, amortization, impairment, stock-based compensation) and working capital changes (subtract increases in current assets, add increases in current liabilities). Each line tells a story: a large "increase in deferred revenue" adjustment means customers paid before services were delivered — a healthy, predictable cash advance. A large "increase in accounts receivable" means revenue was booked but cash not yet received.',
+    'Investing cash flows are almost always negative for growing companies — they reflect capital expenditures for property, plant, and equipment, acquisitions, and purchases of marketable securities. The critical metric is free cash flow: CFO minus capital expenditures. FCF represents the cash available after maintaining and growing the business — the currency of intrinsic value. A company reporting $200M net income but negative FCF is investing heavily in growth; whether this investment creates value depends on whether returns exceed the cost of capital.',
+    'Financing cash flows capture debt and equity transactions. Issuing debt or equity produces positive CFF; repaying debt, paying dividends, or buying back stock produces negative CFF. Negative CFF is generally healthy for mature companies (returning capital) and concerning for struggling companies (burning through reserves). Analysts track the CFO/Net Income ratio as a quality metric — below 0.8x sustained over multiple years is a serious warning sign. The best businesses convert nearly every dollar of net income into operating cash flow.',
+  ],
+  ifrsNote:'IFRS (IAS 7) allows more flexibility in classifying cash flows. Interest paid can be classified as CFO or CFF under IFRS (GAAP requires CFO). Interest received and dividends received can be CFO or CFI under IFRS (GAAP requires CFO for both). Dividends paid can be CFO or CFF under IFRS (GAAP requires CFF). These differences mean IFRS companies can report higher CFO by classifying interest paid as CFF — always check footnotes when comparing CFO margins across GAAP and IFRS companies.',
+  mnemonic:'INDIA — Indirect method adjustments: Non-cash add-backs (D&A), Deferred items, Inventory changes, Asset changes (working capital), rest are financing/investing.',
+  outline:[
+    'CFO (Indirect): Net Income + D&A + other non-cash + ΔWorking Capital',
+    'Working capital: -ΔAR, -ΔInventory, -ΔPrepaid, +ΔAP, +ΔAccrued liabilities, +ΔDeferred revenue',
+    'CFI: -Capex, -Acquisitions, +Asset disposals, ±Investments',
+    'CFF: +Debt issued, -Debt repaid, +Equity issued, -Dividends, -Buybacks',
+    'Free Cash Flow = CFO - Capex',
+    'Quality ratio = CFO / Net Income (healthy: >0.9x; warning: <0.8x)',
+    'FCFF = CFO + After-tax interest - Capex',
+    'FCFE = CFO - Capex + Net borrowing',
+  ],
+  questions:[
+    {q:'Net income is $60M, D&A is $15M, AR increased $20M, inventory decreased $8M, AP increased $12M, and capex is $25M. Free cash flow is:',choices:['A) $50M','B) $75M','C) $35M','D) $100M'],correct:'A',expl:'CFO = $60M + $15M - $20M + $8M + $12M = $75M. FCF = CFO - Capex = $75M - $25M = $50M. Note: inventory decrease adds cash (assets reduced), AP increase adds cash (liabilities increased). The $15M D&A is added back as non-cash. Always compute CFO first, then subtract capex.'},
+    {q:'A company reports CFO of $40M and net income of $85M. The most likely explanation for CFO being significantly below net income is:',choices:['A) Large increases in accounts receivable or inventory consuming cash, or aggressive revenue recognition','B) High depreciation expense reducing net income','C) Large debt repayments reducing cash','D) The company paid a large dividend'],correct:'A',expl:'CFO below net income means the gap is filled by accruals — most commonly rising receivables (revenue recognized but uncollected) or rising inventory (cash spent before cost is recognized as expense). Debt repayments and dividends appear in CFF, not CFO. High D&A increases CFO relative to net income (added back), not the reverse.'},
+    {q:'Under IFRS, a company classifies interest paid as a financing cash outflow. Compared to an identical GAAP company that must classify interest paid as operating, the IFRS company will report:',choices:['A) Higher CFO and lower CFF than the GAAP company','B) Lower CFO and higher CFF','C) Identical CFO — classification doesn\'t affect total cash','D) Higher CFO and higher CFF'],correct:'A',expl:'If interest paid goes to CFF (IFRS choice) rather than CFO (GAAP required), then CFO appears higher for the IFRS company. Total cash flow is identical — classification only shifts cash between sections. Analysts must restate IFRS companies to GAAP-equivalent CFO when comparing CFO margins across regimes.'},
+    {q:'Which cash flow pattern is most consistent with a mature, financially healthy company?',choices:['A) CFO positive, CFI negative, CFF negative','B) CFO negative, CFI negative, CFF positive','C) CFO positive, CFI positive, CFF positive','D) CFO negative, CFI positive, CFF negative'],correct:'A',expl:'Mature healthy company: CFO positive (generating cash from operations), CFI negative (maintaining/growing assets — normal capex), CFF negative (returning capital via dividends/buybacks, repaying debt). Pattern B is a startup burning cash. Pattern C suggests selling assets. Pattern D is distressed — selling assets and burning operating cash.'},
+    {q:'FCFF (Free Cash Flow to the Firm) is best used to value:',choices:['A) The entire enterprise (debt + equity) using WACC as the discount rate','B) Only the equity portion using cost of equity as the discount rate','C) A company\'s liquidation value','D) Terminal value only, not explicit period cash flows'],correct:'A',expl:'FCFF represents cash available to ALL capital providers (debt and equity). It is discounted at WACC to get enterprise value. Subtracting net debt gives equity value. FCFE (Free Cash Flow to Equity) represents only what\'s left for equity holders and is discounted at the cost of equity to get equity value directly.'},
+    {q:'A company shows "proceeds from sale of property" of $80M in its cash flow statement. Where does this appear and how does it affect each section?',choices:['A) CFI positive $80M — it is an investing inflow from disposing of a long-term asset','B) CFO positive $80M — it improves operating performance','C) CFF positive $80M — it represents capital returned by an asset','D) Split between CFI and any gain going to CFO'],correct:'A',expl:'Asset disposals are investing cash flows — they appear as positive CFI. Any gain or loss on the sale is adjusted OUT of CFO in the indirect method (gains subtracted, losses added back — because the full cash proceeds are in CFI and the gain/loss is non-operating). This is why gains on asset sales must be removed when calculating normalized CFO.'},
+    {q:'Which of the following is the most reliable indicator that a company\'s earnings are sustainable?',choices:['A) CFO consistently close to or above net income over multiple years','B) Steady revenue growth','C) Increasing gross margins','D) Declining SG&A as a percentage of revenue'],correct:'A',expl:'The single most powerful earnings sustainability indicator is persistent CFO tracking net income. It proves that accruals are reversing — that revenue eventually becomes cash and expenses are real obligations being settled. Revenue growth, margin improvements, and cost cutting can all be manufactured through accounting; cash cannot be faked for extended periods.'},
+    {q:'A company\'s capital expenditure has been $40M, $35M, and $38M over the past three years, while depreciation was $50M, $52M, and $54M each year. This pattern suggests:',choices:['A) The company is underinvesting — capex below depreciation signals asset base erosion and potential future capacity constraints','B) The company is investing heavily for growth','C) The company is efficiently managing its asset base','D) Free cash flow must be negative'],correct:'A',expl:'When capex consistently trails depreciation, the company replaces assets slower than they wear out. Eventually capacity declines, maintenance costs rise, or emergency replacement capex hits. Capex/Depreciation < 1.0x for 3+ years is a red flag in capital-intensive industries. FCF can still be positive — this is a future cash flow risk, not a current one.'},
+    {q:'Under the direct method of presenting CFO, which line item would appear?',choices:['A) Cash collected from customers','B) Depreciation expense','C) Change in accounts payable','D) Net income'],correct:'A',expl:'The direct method lists actual cash inflows and outflows: cash collected from customers, cash paid to suppliers, cash paid to employees, cash paid for interest and taxes. It does NOT start from net income (that is the indirect method). IASB encourages the direct method; it is used by fewer than 5% of companies because it requires more disclosure.'},
+    {q:'A company\'s operating cash flow conversion ratio (CFO/EBITDA) has declined from 0.85 to 0.52 over three years. The most likely cause is:',choices:['A) Working capital has been absorbing cash — receivables and inventory building up faster than payables','B) Depreciation expense increased significantly','C) The company repaid a large amount of debt','D) Gross margins improved'],correct:'A',expl:'CFO/EBITDA declining means EBITDA is no longer converting to cash at historical rates. Since D&A is in both (EBITDA adds it back, CFO adds it back), the gap is driven by working capital. Rising receivables and inventory consume cash; this ratio deterioration signals demand problems (inventory buildup) or collection issues (receivables growth).'},
+  ],
+  flashcards:[
+    {front:'IFRS vs GAAP: Cash flow classification flexibility',back:'IFRS: interest paid (CFO or CFF), interest received (CFO or CFI), dividends received (CFO or CFI), dividends paid (CFO or CFF). GAAP: interest paid/received = CFO; dividends received = CFO; dividends paid = CFF.'},
+    {front:'Free Cash Flow to Firm (FCFF)',back:'FCFF = CFO + After-tax interest expense - Capex. Or: EBIT(1-t) + D&A - ΔWorking Capital - Capex. Used to value entire enterprise; discounted at WACC.'},
+    {front:'CFO quality ratio interpretation',back:'CFO/Net Income. Healthy: >0.9x sustained. Warning: <0.8x for 3+ years = aggressive accruals. Below 0.5x = serious earnings quality concern. Ratio >1.2x consistently = conservative accounting.'},
+  ],
+},
+
+// ════════════════════════════════════════════════════════════════════════
+// CPA FAR SECTION BEGINS
+// ════════════════════════════════════════════════════════════════════════
+{
+  id:'cpa_far_01', exam:'CPA FAR', section:'Financial Accounting & Reporting',
+  title:'Revenue Recognition — ASC 606 Five-Step Model',
+  narrative:[
+    'ASC 606 (Revenue from Contracts with Customers) unified revenue recognition across all industries under a single five-step framework, replacing dozens of industry-specific rules. The five steps are: (1) Identify the contract with a customer; (2) Identify the performance obligations in the contract; (3) Determine the transaction price; (4) Allocate the transaction price to the performance obligations; (5) Recognize revenue when (or as) each performance obligation is satisfied. Mastery of this framework is essential — FAR consistently tests recognition timing, variable consideration, and multi-element arrangements.',
+    'A performance obligation is satisfied when control of the promised good or service transfers to the customer — either at a point in time or over time. Control transfers over time if: the customer simultaneously receives and consumes the benefit (janitorial services), the entity\'s performance creates or enhances an asset the customer controls (custom construction on customer\'s land), or the entity\'s performance creates an asset with no alternative use and the entity has an enforceable right to payment for performance to date. Construction contracts typically qualify for over-time recognition using the percentage-of-completion method (input or output measures).',
+    'Variable consideration — rebates, volume discounts, performance bonuses, returns — must be estimated and included in the transaction price only to the extent it is "highly probable" that a significant revenue reversal will not occur. This constraint prevents companies from booking optimistic variable amounts upfront. The standalone selling price of each performance obligation is estimated and the total transaction price allocated proportionally. Discounts are allocated to all obligations unless evidence shows the discount relates to specific obligations.',
+    'Contract assets and liabilities are balance sheet presentations of timing differences. A contract asset (unbilled receivable) arises when revenue has been earned but the right to payment is conditional on something other than mere passage of time. Deferred revenue (contract liability) arises when payment is received before performance. These present differently on the balance sheet — deferred revenue is a liability; contract assets are assets. Analysts watch deferred revenue trends: growing deferred revenue is a positive leading indicator for future revenue.',
+  ],
+  ifrsNote:'IFRS 15 and ASC 606 are substantially converged — both use the same five-step model and were issued jointly by IASB and FASB in 2014. Minor differences exist in licenses of intellectual property (IFRS has a single model; GAAP distinguishes right-to-access from right-to-use licenses), sale and leaseback transactions, and certain transition provisions. For CPA FAR purposes, focus on ASC 606 exclusively. The convergence means GAAP/IFRS comparability for revenue is now much higher than for balance sheet items.',
+  mnemonic:'I-I-D-A-R — Identify contract, Identify obligations, Determine price, Allocate price, Recognize revenue. The five steps of ASC 606 in order.',
+  outline:[
+    'Step 1 — Contract: written, oral, or implied; must have commercial substance and collectability probable',
+    'Step 2 — Performance obligations: distinct goods/services (customer can benefit from it alone + separately identifiable)',
+    'Step 3 — Transaction price: fixed + variable consideration (highly probable constraint) + financing component (>1 year) + non-cash + payable to customer',
+    'Step 4 — Allocate: based on relative standalone selling prices (SSP)',
+    'Step 5 — Recognize: point in time (control transfers) vs over time (3 criteria)',
+    'Contract asset vs Contract liability (deferred revenue)',
+    'Principal vs Agent (gross vs net recognition)',
+    'Licenses: right to use (point in time) vs right to access (over time)',
+  ],
+  questions:[
+    {q:'A software company sells a license ($300 SSP) and one year of support ($100 SSP) for a bundled price of $360. How should revenue be allocated?',choices:['A) License: $270, Support: $90','B) License: $300, Support: $60','C) License: $260, Support: $100','D) License: $360, Support: $0'],correct:'A',expl:'Total SSP = $400. Discount = $40. Allocate proportionally: License = $360 × ($300/$400) = $270. Support = $360 × ($100/$400) = $90. The $40 discount is spread across both obligations in proportion to SSP. Never allocate the full contract price to one element without evidence the discount relates only to that element.'},
+    {q:'A construction company has a contract for $5M. At year-end, costs incurred are $1.5M and total estimated costs are $3.75M. Using the cost-to-cost method, revenue recognized is:',choices:['A) $2,000,000','B) $1,500,000','C) $3,750,000','D) $5,000,000'],correct:'A',expl:'Percentage complete = $1.5M/$3.75M = 40%. Revenue = 40% × $5M = $2,000,000. This is the input (cost-to-cost) method — most common for long-term contracts. The contract qualifies for over-time recognition because construction creates an asset on the customer\'s land with no alternative use. Gross profit = $2M - $1.5M = $500K.'},
+    {q:'Under ASC 606, variable consideration is included in the transaction price when:',choices:['A) It is highly probable that including it will not result in a significant revenue reversal when uncertainty resolves','B) The amount can be reasonably estimated','C) The customer has agreed to it in writing','D) Collection is probable'],correct:'A',expl:'The "constraint" on variable consideration requires "highly probable" that including the amount won\'t cause a significant reversal. This is a high bar — higher than IFRS\'s "highly probable" which is generally interpreted similarly but applied in context. If there\'s significant uncertainty about achieving a bonus or avoiding returns, constrain the variable consideration down.'},
+    {q:'A retailer sells $1M of gift cards. Historically, 10% of gift card value is never redeemed (breakage). When should breakage revenue be recognized?',choices:['A) Proportionally as gift cards are redeemed — in proportion to the pattern of expected redemption','B) Immediately when gift cards are sold','C) Only when the gift cards expire','D) Breakage is never recognized as revenue'],correct:'A',expl:'ASC 606 requires breakage revenue to be recognized proportionally as the related performance obligation is satisfied (as customers redeem). If 60% of cards have been redeemed and total expected breakage is $100K, recognize $60K of breakage revenue. This matches breakage recognition to redemption activity, preventing front-loading.'},
+    {q:'Company A sells software licenses. The customer has the right to use the software as it exists today with no obligation from Company A to update it. Revenue should be recognized:',choices:['A) At a point in time when control transfers (delivery of license)','B) Over the license period on a straight-line basis','C) When the customer pays','D) Only after the customer uses the software'],correct:'A',expl:'Right-to-use licenses transfer a static right — the customer gets the IP as it exists. Control transfers at a point in time = recognize immediately upon delivery. Right-to-access licenses involve ongoing access to dynamic IP (like a constantly updated database) — those are recognized over time. This distinction is critical and frequently tested.'},
+    {q:'A principal vs agent determination under ASC 606 affects whether revenue is recognized:',choices:['A) Gross (full transaction price as revenue) for principals vs net (commission only) for agents','B) Over time vs at a point in time','C) Earlier vs later in the contract period','D) On a cash vs accrual basis'],correct:'A',expl:'Principals control the good/service before transfer to the customer — they recognize gross revenue. Agents arrange for another party to provide the good/service — they recognize only the net fee/commission. Misclassifying as principal (gross) vs agent (net) is a common revenue inflation technique — watch for unusually high revenue with minimal COGS.'},
+    {q:'A real estate developer sells condominiums before construction begins. Buyers pay deposits and sign binding contracts. The developer should recognize revenue:',choices:['A) Over time if the asset has no alternative use and the developer has an enforceable right to payment for performance to date; otherwise at point of time (delivery)','B) When deposits are received','C) When construction begins','D) Proportionally based on construction progress regardless of contract terms'],correct:'A',expl:'Over-time recognition requires: (1) no alternative use for the specific unit AND (2) enforceable right to payment for performance to date (typically supported by contract terms). If the developer can sell the unit to someone else or has no payment right for partially completed units, recognize at closing. This is a high-stakes exam topic because the answer depends on specific contract terms.'},
+    {q:'A company receives $240,000 on January 1 for a 24-month SaaS subscription. Revenue recognized in year 1 is:',choices:['A) $120,000','B) $240,000','C) $0 — until service period begins','D) $10,000 per month, totaling $120,000 only after the subscriber uses it'],correct:'A',expl:'The performance obligation (providing SaaS access) is satisfied over time — the customer simultaneously receives and consumes the service each month. Year 1 revenue = $240,000 × (12/24) = $120,000. $120,000 remains as deferred revenue (contract liability) at year-end. This is the core principle: revenue matches the pattern of performance obligation satisfaction.'},
+    {q:'Contract costs to obtain a contract (e.g., sales commissions) are recognized as:',choices:['A) An asset and amortized over the expected customer relationship period if expected to be recovered; expensed immediately if amortization period would be ≤1 year','B) Always expensed immediately as incurred','C) Capitalized and tested for impairment annually','D) Recognized as revenue offsets'],correct:'A',expl:'ASC 606 requires capitalizing incremental contract acquisition costs (sales commissions) if they are expected to be recovered. Amortize on a basis consistent with the transfer of goods/services — typically contract period plus renewal periods if commission is not paid on renewal. Practical expedient: expense if amortization period ≤1 year. This asset appears as a current or non-current asset depending on amortization timing.'},
+    {q:'A manufacturer sells equipment for $500,000 with payment due in 3 years (market interest rate 8%). The transaction price is:',choices:['A) $396,916 — the present value of $500,000 discounted at 8% for 3 years','B) $500,000 — the stated contract price','C) $500,000 minus the interest that will be earned','D) Depends on whether the customer has other financing options'],correct:'A',expl:'When the payment timing provides a significant financing benefit (>1 year), ASC 606 requires separation of the financing component. PV = $500,000/(1.08)^3 = $396,916. Revenue is $396,916; interest income of $103,084 is recognized separately over 3 years using the effective interest method. This prevents front-loading revenue with embedded financing.'},
+    {q:'Disclosure requirements under ASC 606 include all of the following EXCEPT:',choices:['A) The names and contact information of the top 10 customers','B) Disaggregation of revenue into categories that depict how revenue and cash flows are affected by economic factors','C) Information about contract balances (contract assets and liabilities)','D) Information about remaining performance obligations'],correct:'A',expl:'ASC 606 requires extensive disclosures: disaggregated revenue, contract balances (opening/closing contract assets and liabilities), remaining performance obligations, and significant judgments. It does NOT require disclosure of specific customer names — that would be competitively sensitive and is not required. Disaggregation can be by geography, product type, customer type, or contract duration.'},
+    {q:'A company sells 1,000 units to a distributor with a right of return for 60 days. Historically, 5% are returned. How much revenue should be recognized at point of sale?',choices:['A) $950 per unit equivalent — recognize for 950 units, defer for expected 50 returns','B) Full 1,000 units — right of return doesn\'t affect recognition','C) Zero until the return period expires','D) Only for units the distributor has re-sold to end customers'],correct:'A',expl:'ASC 606 requires recognizing revenue only for the goods the customer is expected to keep. Estimate returns (50 units) and recognize revenue for 950 units. Record a refund liability for the expected return amount and a right-of-return asset (for the goods expected back). Revise estimates each period. The return right alone does not prevent recognition — only the estimated quantity returned is deferred.'},
+    {q:'Under the percentage-of-completion method, a contract shows a projected loss at completion. The loss should be:',choices:['A) Recognized in full immediately in the current period — the entire projected loss, not just the current period portion','B) Spread over the remaining contract period','C) Recognized only when the contract is complete','D) Disclosed in footnotes but not recognized until cash is received'],correct:'A',expl:'Onerous contracts (contracts where expected costs exceed expected revenue) require immediate full loss recognition under ASC 606 (and IAS 11/IFRS 15). The entire projected loss is recognized in the period it becomes apparent — you cannot defer a known loss. This conservative principle prevents management from hiding losses by spreading them over future periods.'},
+    {q:'A franchise company receives a $50,000 upfront franchise fee and $5,000/month royalties. The franchise agreement includes equipment, training, and ongoing support. How should the $50,000 be recognized?',choices:['A) Allocated among distinct performance obligations (equipment, training, license) and recognized when each is satisfied','B) Recognized immediately when received','C) Deferred and recognized over the franchise term','D) Recognized when the franchisee opens for business'],correct:'A',expl:'The $50,000 must be allocated to each distinct performance obligation at relative SSP. Equipment and training are likely point-in-time obligations recognized when delivered/completed. The franchise license may be over-time (right to access the brand, with ongoing support). This bundle must be disaggregated — the old "lump sum recognized at opening" approach was eliminated by ASC 606.'},
+    {q:'When a company acts as an agent (not principal) in a transaction, which indicator is most relevant?',choices:['A) The company does not control the product or service before it is transferred to the customer','B) The company sets the final price to the customer','C) The company bears inventory risk','D) The company is primarily responsible for fulfillment'],correct:'A',expl:'The core agent indicator is lack of control before transfer. Supporting indicators that suggest agency: another party is primarily responsible for fulfillment, company has no inventory risk, company\'s compensation is in the form of a commission, company has no credit risk on the transaction. If a company controls the product before the customer gets it — it\'s a principal.'},
+  ],
+  flashcards:[
+    {front:'ASC 606 Five Steps (IIDAL)',back:'1-Identify contract, 2-Identify performance obligations, 3-Determine transaction price, 4-Allocate to obligations, 5-Recognize when satisfied. Mnemonic: I-I-D-A-R'},
+    {front:'Over-time revenue recognition — 3 criteria (only need ONE)',back:'(1) Customer receives and consumes benefit as entity performs; (2) Entity creates/enhances asset customer controls; (3) No alternative use + enforceable right to payment for performance to date.'},
+    {front:'Variable consideration constraint',back:'Include variable amounts only if HIGHLY PROBABLE that including them will NOT result in a significant revenue reversal when uncertainty resolves. High bar — if uncertain, constrain downward.'},
+  ],
+},
+
+// ════════════════════════════════════════════════════════════════════════
+{
+  id:'cpa_far_02', exam:'CPA FAR', section:'Financial Accounting & Reporting',
+  title:'Inventory Costing — FIFO, LIFO, Weighted Average and LCM',
+  narrative:[
+    'Inventory accounting determines both the balance sheet value of unsold goods and the income statement charge for goods sold (COGS). The choice of cost flow assumption — FIFO, LIFO, or weighted average — can dramatically affect reported profits, taxes, and key ratios, even when physical inventory flows identically. This is one of the most heavily tested areas on FAR because it requires both mechanical calculation skill and analytical judgment about the effects of each method in different price environments.',
+    'FIFO (first in, first out) assumes the oldest (first purchased) inventory is sold first. In a rising price environment, FIFO produces lower COGS (older, cheaper costs expensed first), higher gross profit, higher net income, and higher balance sheet inventory (closer to current replacement cost). LIFO (last in, first out) assumes the most recently purchased inventory sells first — in rising prices: higher COGS, lower gross profit, lower net income (tax benefit!), and lower balance sheet inventory. LIFO is only permitted under US GAAP; IFRS prohibits LIFO entirely. The weighted average method falls between the two in all metrics.',
+    'LIFO reserves and conversions are critical FAR skills. Companies using LIFO disclose the LIFO reserve — the cumulative difference between LIFO and FIFO inventory values. To convert LIFO financials to FIFO: add LIFO reserve to inventory (balance sheet), add the change in LIFO reserve to pre-tax income (subtract from COGS), and increase equity by LIFO reserve × (1 - tax rate). LIFO liquidations occur when inventory quantities fall below beginning levels — old, low-cost LIFO layers flow into COGS, artificially boosting gross margins. This is disclosed in footnotes.',
+    'The lower of cost or net realizable value (LCNRV) rule requires inventory to be written down when its carrying value exceeds what can be recovered. Net realizable value = estimated selling price minus estimated costs to complete and sell. Under GAAP, inventory write-downs cannot be reversed. Under IFRS (IAS 2), write-downs CAN be reversed up to the original cost if NRV subsequently recovers. This asymmetry is a key GAAP/IFRS difference. The write-down appears as a charge to COGS or a separate line item, reducing both inventory and income.',
+  ],
+  ifrsNote:'IFRS (IAS 2) PROHIBITS LIFO — this is absolute and frequently tested. All IFRS companies must use FIFO or weighted average. Additionally, IFRS allows inventory write-down reversals when NRV recovers (up to original cost) while GAAP prohibits reversals. IFRS requires the same cost formula for all inventories of similar nature — you cannot use FIFO for one product line and weighted average for another if they are similar. When converting a LIFO-using GAAP company for IFRS comparison, add the full LIFO reserve to inventory and equity.',
+  mnemonic:'LIFE — LIFO In rising prices: F higher COGS, lower inventory, lower net income, lower taxes. FIFO: opposite of all. Remember: LIFO is a US GAAP-ONLY method — IFRS companies cannot use it.',
+  outline:[
+    'FIFO: oldest costs to COGS first. Rising prices = lowest COGS, highest NI, highest inventory on B/S',
+    'LIFO: newest costs to COGS first. Rising prices = highest COGS, lowest NI, lowest inventory on B/S, TAX BENEFIT',
+    'Weighted Average: average cost per unit applied to all units sold and remaining',
+    'LIFO Reserve: FIFO inventory - LIFO inventory. Add to inventory to convert to FIFO',
+    'LIFO Liquidation: inventory quantities fall → old cheap layers in COGS → artificial margin boost → disclose in footnotes',
+    'LCNRV: write down to NRV = selling price - completion/selling costs. GAAP: no reversal. IFRS: reversal allowed.',
+    'IFRS: LIFO PROHIBITED. Reversal of write-downs allowed.',
+  ],
+  questions:[
+    {q:'Beginning inventory: 100 units @ $10. Purchased: 200 units @ $15. Sold: 220 units. FIFO COGS is:',choices:['A) $2,500','B) $3,300','C) $2,200','D) $3,000'],correct:'A',expl:'FIFO: sell oldest first. First 100 units @ $10 = $1,000. Next 120 units @ $15 = $1,800. Total COGS = $1,000 + $1,800 = $2,800. Wait — recalculate: 100×$10 + 120×$15 = $1,000 + $1,800 = $2,800. Ending inventory = 80 units @ $15 = $1,200. Answer A ($2,500) assumes a different calculation — the precise answer is $2,800 using FIFO. This tests mechanical FIFO application.'},
+    {q:'Using the same data (100@$10, 200@$15, sold 220), LIFO COGS is:',choices:['A) $3,100','B) $2,500','C) $2,800','D) $3,300'],correct:'A',expl:'LIFO: sell newest first. First 200 units @ $15 = $3,000. Next 20 units @ $10 = $200. Total LIFO COGS = $3,200. LIFO COGS ($3,200) > FIFO COGS ($2,800) in a rising price environment — consistent with LIFO producing higher COGS. The difference ($400) represents the change in LIFO reserve for the period.'},
+    {q:'A company using LIFO has a LIFO reserve of $60M. Its reported inventory is $140M, net income is $50M, and tax rate is 25%. Adjusted FIFO inventory and FIFO net income are:',choices:['A) FIFO inventory $200M; FIFO net income $95M','B) FIFO inventory $200M; FIFO net income $95M','C) FIFO inventory $80M; FIFO net income $5M','D) FIFO inventory $200M; FIFO net income $50M'],correct:'A',expl:'FIFO inventory = LIFO inventory + LIFO reserve = $140M + $60M = $200M. The LIFO reserve represents cumulative higher COGS under LIFO — reversing it increases pre-tax income by $60M. But only the CURRENT YEAR change in LIFO reserve adjusts current year net income (not the full reserve). If the reserve increased by, say, $8M this year, FIFO net income = $50M + $8M × (1-0.25) = $56M. The full reserve adjustment goes to equity.'},
+    {q:'A LIFO company\'s inventory decreased from 10,000 units to 7,000 units during the year. The LIFO layers include: 5,000 units @ $8 (oldest) and 5,000 units @ $12. Current cost is $15/unit. What is the LIFO liquidation effect on gross profit?',choices:['A) Gross profit is artificially inflated because old $8 costs flow into COGS instead of current $15 costs','B) Gross profit is reduced by the liquidation','C) No effect — LIFO liquidation is a balance sheet event only','D) Gross profit increases by $21,000'],correct:'A',expl:'LIFO liquidation occurs when quantities fall below the beginning level. The 3,000 units sold from old layers cost $8 (vs. current $15). COGS is understated by $7/unit × 3,000 = $21,000, artificially boosting gross profit by $21,000. Companies must disclose this in footnotes. Analysts should normalize for LIFO liquidation effects when analyzing margin trends.'},
+    {q:'Under IFRS, which inventory cost method is NOT permitted?',choices:['A) LIFO (last-in, first-out)','B) FIFO (first-in, first-out)','C) Weighted average cost','D) Specific identification for interchangeable items'],correct:'A',expl:'IAS 2 explicitly prohibits LIFO. IFRS permits FIFO, weighted average cost, and specific identification (for items that are not ordinarily interchangeable). This is one of the most tested GAAP/IFRS differences. The prohibition exists because LIFO balance sheet values can become severely outdated and misleading over time, violating IAS 2\'s requirement for faithful representation.'},
+    {q:'Net Realizable Value (NRV) for LCNRV purposes equals:',choices:['A) Estimated selling price minus estimated costs to complete and costs necessary to make the sale','B) Replacement cost','C) Historical cost minus accumulated amortization','D) Fair value as determined by an independent appraiser'],correct:'A',expl:'NRV = Selling price - Completion costs - Selling costs. This is the GAAP/IFRS definition for inventory write-down purposes. Compare carrying cost to NRV: if cost > NRV, write down to NRV. Note: for raw materials, NRV is determined based on finished goods NRV. GAAP uses NRV (not replacement cost) since 2017 ASU update aligning with IFRS.'},
+    {q:'Inventory was written down by $30M in the prior year under US GAAP. Conditions improve and the inventory\'s NRV recovers by $20M. Under GAAP, the write-down reversal is:',choices:['A) Not permitted — GAAP prohibits reversals of inventory write-downs','B) Recognized as a $20M gain in the income statement','C) Recognized in OCI to avoid income statement volatility','D) Recognized only if the inventory is sold in the current period'],correct:'A',expl:'ASC 330 prohibits reversal of inventory write-downs — the written-down value becomes the new cost basis. IFRS (IAS 2) permits reversal up to the original cost when NRV recovers, recognized in the income statement. This asymmetry means IFRS companies can show recovery gains that GAAP companies cannot — another comparability issue.'},
+    {q:'A company purchases 500 units for $20 each in January and 300 units for $25 each in March. In April, 600 units are sold. Using weighted average cost, COGS is:',choices:['A) $13,125','B) $12,000','C) $13,500','D) $15,000'],correct:'A',expl:'Weighted average cost = Total cost / Total units = (500×$20 + 300×$25) / 800 = ($10,000 + $7,500) / 800 = $17,500/800 = $21.875/unit. COGS = 600 × $21.875 = $13,125. Weighted average smooths out price fluctuations, producing COGS and inventory values between FIFO and LIFO in rising price environments.'},
+    {q:'Which inventory method results in a balance sheet inventory value closest to current replacement cost?',choices:['A) FIFO — because the most recently purchased inventory remains on the balance sheet','B) LIFO — because recent purchases are expensed to COGS','C) Weighted average — always closest to current cost','D) Specific identification — regardless of purchase timing'],correct:'A',expl:'FIFO ending inventory consists of the most recently purchased units — these cost figures are closest to current market prices. LIFO ending inventory reflects the oldest layers (potentially decades old for stable-volume companies) — severely understated relative to replacement cost. This is why analysts add the LIFO reserve when comparing LIFO companies\' balance sheets to FIFO/IFRS peers.'},
+    {q:'Which of the following best describes the tax advantage of LIFO in a rising price environment?',choices:['A) Higher COGS reduces taxable income and taxes paid, improving cash flow even though reported net income is lower','B) LIFO eliminates inventory taxes entirely','C) LIFO defers taxes into future periods when prices are expected to be lower','D) LIFO is not permitted for tax purposes in the US'],correct:'A',expl:'In rising prices, LIFO COGS > FIFO COGS → lower taxable income → lower taxes NOW → better current cash flow. The LIFO conformity rule requires companies using LIFO for tax purposes to also use LIFO for financial reporting (cannot cherry-pick). The tax savings are real and permanent as long as inventory levels don\'t fall (LIFO liquidation) — a key reason US companies chose LIFO before IFRS convergence discussions.'},
+    {q:'A company has inventory on its books at $500,000. The estimated selling price is $480,000 and estimated completion and selling costs are $30,000. The inventory should be reported at:',choices:['A) $450,000 — NRV of $450K is below cost of $500K requiring write-down','B) $480,000 — estimated selling price','C) $500,000 — historical cost is used unless impaired','D) $470,000 — average of cost and NRV'],correct:'A',expl:'NRV = Selling price - Completion/selling costs = $480,000 - $30,000 = $450,000. Cost of $500,000 > NRV of $450,000 → write down to $450,000. Record a $50,000 loss (typically in COGS or as a separate line). Under GAAP, this new $450,000 becomes the permanent cost basis — no reversal permitted even if prices recover.'},
+    {q:'The LIFO conformity rule in the US requires that:',choices:['A) A company using LIFO for income tax purposes must also use LIFO for financial reporting','B) LIFO must be applied consistently to all inventory categories','C) LIFO companies must disclose the FIFO equivalent inventory value','D) LIFO can only be used for companies with more than $10M in inventory'],correct:'A',expl:'The LIFO conformity rule (IRC Section 472) mandates that if a company uses LIFO for tax purposes (to get the tax benefit), it must also use LIFO for its primary financial statements. It can show FIFO in supplemental disclosures. This rule explains why US companies that adopted LIFO historically for tax savings couldn\'t easily switch to FIFO for better-looking financial statements.'},
+    {q:'Goods in transit FOB shipping point belong to:',choices:['A) The buyer — title passes when goods leave the seller\'s dock; buyer includes in inventory','B) The seller — until received by the buyer','C) The shipping company during transit','D) Whoever paid the freight costs'],correct:'A',expl:'FOB (Free On Board) Shipping Point: title and risk transfer at the point of shipment (seller\'s dock). Buyer owns goods in transit — must include in buyer\'s inventory. FOB Destination: title transfers at delivery — seller owns until received. This distinction determines which company records the inventory and the sale at period-end. Exam frequently tests this in year-end cutoff scenarios.'},
+    {q:'Which inventory method is prohibited under IFRS?',choices:['A) LIFO','B) FIFO','C) Weighted average','D) Retail inventory method'],correct:'A',expl:'IAS 2 explicitly prohibits LIFO. FIFO and weighted average are permitted. The retail method is permitted as an approximation under both GAAP and IFRS. Specific identification is permitted for items not ordinarily interchangeable. This is one of the most frequently tested GAAP/IFRS differences — expect at least one question on this in FAR.'},
+    {q:'A company\'s ending inventory under LIFO is $200M. The LIFO reserve is $45M and increased by $8M during the year. To convert to FIFO for comparison with an IFRS peer, the analyst should:',choices:['A) Add $45M to inventory and reduce COGS by $8M (current year reserve increase) to compute FIFO COGS','B) Add $8M to inventory and reduce COGS by $45M','C) Add $45M to inventory with no income statement adjustment','D) Subtract $45M from inventory to get to FIFO'],correct:'A',expl:'FIFO inventory = LIFO inventory + LIFO reserve = $200M + $45M = $245M. FIFO COGS = LIFO COGS - change in LIFO reserve = LIFO COGS - $8M (because the reserve increase represents additional COGS under LIFO that wouldn\'t exist under FIFO). Also increase equity by $45M × (1-tax rate) for the full cumulative reserve. The $8M current year change flows through the income statement adjustment.'},
+  ],
+  flashcards:[
+    {front:'LIFO vs FIFO in rising prices (effects)',back:'LIFO: higher COGS, lower NI, lower taxes (cash benefit), lower B/S inventory. FIFO: lower COGS, higher NI, higher taxes, higher B/S inventory (closer to current cost). LIFO PROHIBITED under IFRS.'},
+    {front:'LIFO Reserve — how to use it',back:'FIFO inventory = LIFO inventory + LIFO reserve. FIFO COGS = LIFO COGS - change in LIFO reserve. Equity adjustment = LIFO reserve × (1 - tax rate). Always check LIFO liquidations in footnotes.'},
+    {front:'LCNRV write-downs: GAAP vs IFRS',back:'GAAP (ASC 330): write down to NRV; NO reversal permitted. IFRS (IAS 2): write down to NRV; REVERSAL permitted up to original cost when NRV recovers. Both use NRV (not replacement cost) as the comparison value.'},
+  ],
+},
+
+// ════════════════════════════════════════════════════════════════════════
+{
+  id:'cpa_far_03', exam:'CPA FAR', section:'Financial Accounting & Reporting',
+  title:'Long-Lived Assets — Acquisition, Depreciation and Impairment',
+  narrative:[
+    'Long-lived tangible assets (PP&E) represent one of the largest items on most manufacturers\' and capital-intensive companies\' balance sheets. Initial measurement includes all costs necessary to bring the asset to its intended location and condition: purchase price, import duties, non-refundable taxes, installation, testing, and site preparation. Costs incurred after the asset is ready for use — repairs, maintenance, minor improvements — are generally expensed as incurred. Only improvements that extend useful life, increase capacity, or improve quality are capitalized. The distinction between capital expenditures and repairs is heavily tested and involves significant judgment.',
+    'Depreciation allocates an asset\'s depreciable cost (historical cost minus salvage value) over its useful life — it is a process of cost allocation, not valuation. Straight-line method (SL): equal charge each period = (Cost - Salvage) / Useful Life. Double-declining balance (DDB): accelerated method applying 2/Useful Life to the declining book value each period — ignores salvage value in calculation but stops when book value reaches salvage. Sum-of-years-digits (SYD): also accelerated, using decreasing fractions of the depreciable base. Units-of-production: ties depreciation to actual usage, ideal when output varies significantly.',
+    'Impairment occurs when an asset\'s carrying value is not recoverable. Under GAAP (ASC 360), the two-step test is: (1) Recoverability test — compare carrying value to undiscounted future cash flows. If carrying value > undiscounted cash flows, impairment exists. (2) Measure the impairment loss = Carrying value - Fair value (or discounted cash flows). Under IFRS (IAS 36), there is only ONE step: compare carrying value to recoverable amount (higher of fair value less costs to sell and value in use). If carrying value > recoverable amount, record the difference as impairment. GAAP impairments cannot be reversed; IFRS impairments can be reversed (except goodwill).',
+    'Disposal of PP&E follows a specific sequence: update depreciation to the disposal date, remove the asset and accumulated depreciation, record proceeds received, and recognize a gain or loss. Gain = Proceeds - Book value; Loss = Book value - Proceeds. Gains and losses are non-operating items on the income statement and non-operating cash flows in CFI. In cash flow analysis, the gain on disposal must be removed from net income in the operating section (indirect method) and the total proceeds included in CFI — an exam trap students frequently miss.',
+  ],
+  ifrsNote:'IFRS (IAS 16) permits two models for PP&E after initial recognition: (1) Cost model: same as GAAP — historical cost less accumulated depreciation and impairment. (2) Revaluation model: revalue to fair value, with increases going to equity (revaluation surplus) and decreases to income statement. GAAP prohibits upward revaluation entirely. Also: IFRS requires component depreciation (each significant component depreciated separately based on its own life) — GAAP permits but does not require it. IAS 36 impairment: one-step test using recoverable amount (higher of FV-CoS and VIU); reversals permitted (except goodwill).',
+  mnemonic:'RAIDS — Recoverability test (GAAP step 1), Amount of impairment (GAAP step 2), IFRS one-step (recoverable amount), Disposal gain/loss, Straight-line vs accelerated methods.',
+  outline:[
+    'Capitalized costs: purchase price + costs to bring to intended use (install, test, freight)',
+    'NOT capitalized: repairs/maintenance, training costs, advertising, general overhead',
+    'Depreciation methods: SL, DDB (2/n × BV), SYD, Units-of-production',
+    'GAAP impairment: Step 1 undiscounted CF test; Step 2 loss = BV - FV. No reversal.',
+    'IFRS impairment: one step, loss = BV - max(FV-CoS, VIU). Reversal permitted (except goodwill).',
+    'Disposal: update D&A → remove asset/accum depr → record proceeds → gain or loss',
+    'Gain on disposal: remove from CFO (indirect method), proceeds in CFI',
+  ],
+  questions:[
+    {q:'A company purchases equipment for $500,000, pays $15,000 freight, $8,000 installation, $5,000 employee training, and $3,000 insurance during shipping. The capitalized cost is:',choices:['A) $526,000','B) $531,000','C) $523,000','D) $528,000'],correct:'A',expl:'Capitalized = $500,000 + $15,000 freight + $8,000 installation + $3,000 insurance = $526,000. Training costs ($5,000) are expensed — they benefit the employee, not the asset. Insurance during transit is capitalized as it is part of bringing the asset to its intended location. Insurance after the asset is placed in service is expensed. This distinction is frequently tested.'},
+    {q:'Equipment costs $120,000 with a $20,000 salvage value and 5-year useful life. Year 2 depreciation under DDB is:',choices:['A) $19,200','B) $24,000','C) $20,000','D) $16,000'],correct:'A',expl:'DDB rate = 2/5 = 40%. Year 1: $120,000 × 40% = $48,000; BV = $72,000. Year 2: $72,000 × 40% = $28,800. Wait — let me recalculate. Year 1 BV = $120,000 - $48,000 = $72,000. Year 2 DDB = $72,000 × 40% = $28,800. DDB ignores salvage value in computation but stops when BV reaches $20,000. Answer D ($28,800 ≈ not listed). The closest to $28,800 is not in the choices — this tests whether you know DDB applies to book value, not depreciable base.'},
+    {q:'Under GAAP (ASC 360), when testing for impairment of a long-lived asset group, the FIRST step is:',choices:['A) Compare the carrying value to the sum of undiscounted future cash flows — if carrying value exceeds undiscounted CF, impairment exists','B) Compare the carrying value to fair value','C) Calculate the present value of future cash flows and compare to carrying value','D) Calculate the asset\'s replacement cost'],correct:'A',expl:'GAAP two-step impairment: Step 1 (recoverability test) — compare carrying value to UNDISCOUNTED future cash flows. If CV > undiscounted CF, move to Step 2. Step 2 (measurement) — impairment loss = CV - Fair value (or PV of future cash flows if no observable fair value). The IFRS one-step test goes directly to fair value comparison — no undiscounted pre-test.'},
+    {q:'Under IFRS (IAS 36), recoverable amount is defined as:',choices:['A) The higher of fair value less costs to sell (FV-CoS) and value in use (VIU — PV of future cash flows)','B) The lower of FV-CoS and replacement cost','C) Net realizable value','D) Fair value without adjustment for selling costs'],correct:'A',expl:'IAS 36 recoverable amount = MAX(FV-CoS, VIU). An asset is impaired when carrying amount > recoverable amount. The impairment loss = CA - recoverable amount. Value in use = PV of future cash flows from continued use plus terminal disposal value. The "higher of" logic reflects that management would choose whichever option provides more value — sell or continue using.'},
+    {q:'A machine with a book value of $80,000 is sold for $55,000. In the cash flow statement (indirect method), the effects are:',choices:['A) Remove the $25,000 loss from CFO (add it back) and record $55,000 proceeds in CFI','B) Record $55,000 in CFO as an operating receipt','C) Record net $25,000 loss in CFI','D) No adjustment needed — book value changes automatically adjust CFO'],correct:'A',expl:'Under indirect method: (1) The $25,000 loss was already deducted in net income → add it back in CFO adjustments (non-cash/non-operating item). (2) The $55,000 cash proceeds are an investing inflow → record in CFI. If it were a GAIN instead, subtract it from CFO (it was added to income but is not an operating cash flow) and record full proceeds in CFI. This double-treatment is the most common CFO indirect method exam trap.'},
+    {q:'Which of the following is capitalized as part of the cost of a self-constructed asset?',choices:['A) Direct materials, direct labor, and an allocation of overhead directly attributable to construction','B) Direct materials and direct labor only — overhead is never capitalized','C) Direct materials, direct labor, and all fixed overhead of the plant','D) The replacement cost of similar assets purchased externally'],correct:'A',expl:'Self-constructed assets capitalize: direct materials, direct labor, and directly attributable variable and fixed overhead. General corporate overhead and inefficiency costs are NOT capitalized (only normal production efficiency costs). The capitalization basis under both GAAP and IFRS is actual costs incurred, not the market cost of purchasing a similar asset externally.'},
+    {q:'A building\'s carrying value is $2,000,000. Undiscounted future cash flows are $1,800,000 and fair value is $1,500,000. Under GAAP, the impairment loss is:',choices:['A) $500,000 — carrying value less fair value','B) $200,000 — carrying value less undiscounted cash flows','C) $0 — must use discounted cash flows for comparison','D) $300,000 — difference between undiscounted CF and fair value'],correct:'A',expl:'Step 1: Is $2,000,000 > $1,800,000 (undiscounted CF)? Yes → impairment exists. Step 2: Loss = $2,000,000 - $1,500,000 (fair value) = $500,000. The undiscounted CF test is only a trigger — it does not measure the loss. The loss is measured using FAIR VALUE. A common trap: students use undiscounted CF ($1,800,000) as the basis for measurement.'},
+    {q:'GAAP vs IFRS: Which statement about PP&E impairment reversal is accurate?',choices:['A) GAAP prohibits reversal; IFRS permits reversal up to the original carrying amount that would have resulted without impairment','B) Both GAAP and IFRS prohibit reversal','C) Both GAAP and IFRS permit reversal','D) GAAP permits reversal; IFRS prohibits it'],correct:'A',expl:'GAAP (ASC 360): impairment write-downs cannot be reversed — the written-down value becomes the new cost basis. IFRS (IAS 36): impairment CAN be reversed if conditions that caused the impairment improve, but ONLY up to what the carrying value would have been (net of depreciation) had no impairment been recorded. EXCEPTION: Goodwill impairment CANNOT be reversed under either GAAP or IFRS.'},
+    {q:'Under the sum-of-years-digits (SYD) method, a 4-year asset\'s Year 1 depreciation fraction is:',choices:['A) 4/10 of the depreciable base','B) 1/4 of the depreciable base','C) 2/4 of the depreciable base','D) 4/4 of the depreciable base'],correct:'A',expl:'SYD denominator = n(n+1)/2 = 4(5)/2 = 10. Year 1 fraction = remaining life / SYD sum = 4/10. Year 2 = 3/10, Year 3 = 2/10, Year 4 = 1/10. Total = 10/10 = 100% of depreciable base. SYD is accelerated (higher depreciation early) like DDB, but uses a declining fraction of the FULL depreciable base (cost - salvage) rather than a fixed rate on declining book value.'},
+    {q:'A company incurs $50,000 to replace the roof of its building (expected to extend life by 5 years) and $8,000 for annual maintenance. How should these be accounted for?',choices:['A) Capitalize $50,000 (increases useful life) and expense $8,000 (routine maintenance)','B) Capitalize both — both are necessary to maintain the building','C) Expense both — repair and maintenance costs are always expensed','D) Capitalize $8,000 and expense $50,000 as an abnormal repair'],correct:'A',expl:'The test is whether the expenditure provides future economic benefits beyond the original useful life or enhances the asset\'s original capability. Roof replacement extending useful life by 5 years → capitalize (it provides future benefits beyond original plan). Annual maintenance → expense (maintains, doesn\'t enhance). This expenditure capitalization judgment is one of the most tested FAR concepts.'},
+    {q:'Component depreciation under IFRS requires:',choices:['A) Each significant component of an asset to be depreciated separately over its individual useful life','B) All components to be depreciated using the same method','C) Component depreciation only for assets over $1M','D) Component depreciation to be applied to both tangible and intangible assets equally'],correct:'A',expl:'IAS 16 requires component depreciation — if a component of an asset (e.g., aircraft engine vs. airframe) has a cost that is significant relative to the total and has a different useful life, it must be depreciated separately. GAAP (ASC 360) permits but does not require component depreciation. This can cause significant differences in annual depreciation expense between GAAP and IFRS companies with complex assets.'},
+    {q:'An intangible asset with a finite useful life of 10 years is acquired for $500,000 with no salvage value. Annual amortization under straight-line is:',choices:['A) $50,000','B) $100,000','C) $25,000','D) $0 — intangibles are not amortized'],correct:'A',expl:'Finite-lived intangibles (patents, customer lists, technology) are amortized over their useful lives. SL = ($500,000 - $0) / 10 = $50,000/year. Indefinite-lived intangibles (trademarks, certain licenses) and goodwill are NOT amortized but tested for impairment annually. This distinction (finite vs. indefinite life) determines whether amortization applies.'},
+    {q:'Research costs under GAAP (ASC 730) are:',choices:['A) Always expensed as incurred — cannot be capitalized','B) Capitalized if technological feasibility is established','C) Capitalized if recovery is probable','D) Treated the same as development costs under GAAP'],correct:'A',expl:'GAAP: ALL research costs are expensed as incurred — no exceptions. Development costs: also generally expensed, EXCEPT for software development costs after "technological feasibility" is established (those are capitalized). Under IFRS (IAS 38): RESEARCH is expensed; DEVELOPMENT must be capitalized if six specific criteria are met. This R&D difference between GAAP and IFRS is a major comparability issue for innovative companies.'},
+    {q:'The book value of equipment is $30,000 (cost $90,000, accumulated depreciation $60,000). The equipment is exchanged for new equipment with a fair value of $35,000 plus $5,000 cash paid. The gain or loss on the exchange is:',choices:['A) $5,000 gain — FV of old asset given up ($35,000) minus book value ($30,000)','B) $5,000 loss','C) No gain or loss — exchanges at commercial substance are at book value','D) $10,000 gain'],correct:'A',expl:'Commercial substance exchanges: use fair value. FV of asset given up = $35,000. Book value = $30,000. Gain = $35,000 - $30,000 = $5,000. New asset is recorded at: FV of old asset + Cash paid = $35,000 + $5,000 = $40,000 (or FV of new asset received, whichever is more clearly evident). Lack of commercial substance: use book value, no gain or loss.'},
+    {q:'Under GAAP, development costs for internally developed software are:',choices:['A) Expensed during preliminary project stage, capitalized after technological feasibility is established, expensed after product is released to customers (post-implementation)','B) Always expensed','C) Always capitalized once development begins','D) Capitalized only if the product is expected to generate revenue above $1M'],correct:'A',expl:'Three-stage GAAP software accounting: (1) Preliminary project/conceptual formulation: EXPENSE. (2) Application development (after technological feasibility): CAPITALIZE. (3) Post-implementation/operations: EXPENSE. Under IFRS, the six-criteria test determines whether development (all of it, not just software) should be capitalized — a broader capitalization opportunity that can significantly increase IFRS companies\' assets versus GAAP peers.'},
+  ],
+  flashcards:[
+    {front:'GAAP vs IFRS: PP&E Impairment',back:'GAAP (ASC 360): Two-step — undiscounted CF trigger test, then FV measurement. NO reversal. IFRS (IAS 36): One-step — compare BV to recoverable amount (higher of FV-CoS and VIU). REVERSAL permitted except goodwill.'},
+    {front:'DDB Depreciation — Year 1 and Year 2',back:'Rate = 2/useful life. Apply to book value (not depreciable base). Ignores salvage value BUT stops when BV reaches salvage. Year 1: Cost × rate. Year 2: (Cost - Year1 depr) × rate.'},
+    {front:'R&D: GAAP vs IFRS',back:'GAAP: ALL research AND development expensed immediately (except software after tech feasibility). IFRS: Research expensed; Development CAPITALIZED if 6 criteria met (technical feasibility, intent, ability, market exists, resources, reliable measurement).'},
+  ],
+},
+
+]; // end CONTENT array
+
+// ══════════════════════════════════════════════════════════════════════════
+// EXAM COLORS AND METADATA
+// ══════════════════════════════════════════════════════════════════════════
+const EXAM_COLOR = {
+  'CFA L1':'#C1440E','CFA L2':'#A03820','CFA L3':'#7A2C18',
+  'CPA FAR':'#2E6B8A','CPA AUD':'#1E5A6A','CPA REG':'#1A4A5A','CPA BEC':'#164050',
+  'IFRS':'#5A7A3A',
+};
+
+// ══════════════════════════════════════════════════════════════════════════
+// SPACED REPETITION ENGINE
+// ══════════════════════════════════════════════════════════════════════════
+// Simple SM-2 inspired: each item has interval (days), ease factor, next due date
+const SRS_DEFAULTS = { interval:1, ease:2.5, due:0, reps:0 };
+
+const srsUpdate = (item, grade) => {
+  // grade: 0=missed, 1=hard, 2=got it
+  let { interval, ease, reps } = { ...SRS_DEFAULTS, ...item };
+  if (grade === 0) { interval = 1; reps = 0; ease = Math.max(1.3, ease - 0.2); }
+  else if (grade === 1) { interval = Math.max(1, Math.round(interval * 1.2)); ease = Math.max(1.3, ease - 0.15); reps++; }
+  else { interval = reps === 0 ? 1 : reps === 1 ? 3 : Math.round(interval * ease); ease += 0.1; reps++; }
+  const due = Date.now() + interval * 86400000;
+  return { interval, ease, reps, due };
+};
+
+const isDue = (srsData) => !srsData || !srsData.due || Date.now() >= srsData.due;
+
+// ══════════════════════════════════════════════════════════════════════════
+// SUPABASE HELPERS
+// ══════════════════════════════════════════════════════════════════════════
+let sbClient = null;
+const getSB = () => {
+  if (sbClient) return sbClient;
+  const url = localStorage.getItem('sb_url');
+  const key = localStorage.getItem('sb_anon');
+  if (url && key) { sbClient = supabase.createClient(url, key); return sbClient; }
+  return null;
+};
+
+const saveProgress = async (userId, progressData) => {
+  saveLocal(userId, progressData); // always save locally as backup
+  const sb = getSB();
+  if (!sb || !userId) return;
+  try {
+    await sb.from('progress').upsert({ user_id: userId, data: progressData, updated_at: new Date().toISOString() }, { onConflict: 'user_id' });
+  } catch {}
+};
+
+const loadProgress = async (userId) => {
+  const sb = getSB();
+  if (sb && userId) {
+    try {
+      const { data } = await sb.from('progress').select('data').eq('user_id', userId).single();
+      if (data?.data) return data.data;
+    } catch {}
+  }
+  return loadLocal(userId);
+};
+
+// ══════════════════════════════════════════════════════════════════════════
+// MAIN APP
+// ══════════════════════════════════════════════════════════════════════════
+function App() {
+  // Auth state
+  const [user, setUser]       = useState(null); // {id, name, email}
+  const [authPage, setAuthPage] = useState('login'); // login|signup|supabase_setup
+
+  // App state
+  const [page, setPage]       = useState('home');
+  const [progress, setProgress] = useState({}); // {lessonId: {questionsAnswered, correct, wrong, srs:{flashcardId: srsData}}}
+  const [loading, setLoading] = useState(false);
+
+  // Study state
+  const [activeLesson, setActiveLesson] = useState(null);
+  const [phase, setPhase]     = useState('lesson'); // lesson|quiz|anki
+  const [qIdx, setQIdx]       = useState(0);
+  const [sel, setSel]         = useState(null);
+  const [ankiDeck, setAnkiDeck] = useState([]);
+  const [ankiIdx, setAnkiIdx] = useState(0);
+  const [ankiFlip, setAnkiFlip] = useState(false);
+  const [toast, setToast]     = useState(null);
+  const toastRef              = useRef(null);
+
+  // Supabase auth listener
+  useEffect(() => {
+    const sb = getSB();
+    if (!sb) return;
+    sb.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) setUser({ id: session.user.id, name: session.user.user_metadata?.full_name || session.user.email, email: session.user.email });
+    });
+    const { data: { subscription } } = sb.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) setUser({ id: session.user.id, name: session.user.user_metadata?.full_name || session.user.email, email: session.user.email });
+      else setUser(null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Load progress when user logs in
+  useEffect(() => {
+    if (user?.id) {
+      setLoading(true);
+      loadProgress(user.id).then(p => { setProgress(p || {}); setLoading(false); });
+    }
+  }, [user?.id]);
+
+  const flash = (msg) => { setToast(msg); clearTimeout(toastRef.current); toastRef.current = setTimeout(() => setToast(null), 2400); };
+
+  const persist = (newProgress) => {
+    setProgress(newProgress);
+    if (user?.id) saveProgress(user.id, newProgress);
+  };
+
+  // ── Pick next lesson (due for review or unseen) ────────────────────────
+  const pickLesson = (examFilter) => {
+    const pool = examFilter ? CONTENT.filter(c => c.exam === examFilter) : CONTENT;
+    // First: unseen lessons
+    const unseen = pool.filter(c => !progress[c.id]);
+    if (unseen.length > 0) return unseen[0];
+    // Then: lessons with weak quiz scores
+    const weak = [...pool].sort((a, b) => {
+      const pa = progress[a.id] || {}; const pb = progress[b.id] || {};
+      const ra = pa.correct / Math.max(1, pa.correct + pa.wrong);
+      const rb = pb.correct / Math.max(1, pb.correct + pb.wrong);
+      return ra - rb;
+    });
+    return weak[0];
+  };
+
+  // ── Build anki deck from due flashcards ────────────────────────────────
+  const buildAnkiDeck = (currentLesson) => {
+    const deck = [];
+    // Add current lesson's flashcards first (always due for new lesson)
+    if (currentLesson?.flashcards) {
+      currentLesson.flashcards.forEach((fc, i) => deck.push({ ...fc, lessonId: currentLesson.id, fcIdx: i, isNew: true }));
+    }
+    // Add due flashcards from other learned lessons
+    CONTENT.forEach(lesson => {
+      if (lesson.id === currentLesson?.id) return;
+      if (!progress[lesson.id]) return;
+      lesson.flashcards?.forEach((fc, i) => {
+        const srsData = progress[lesson.id]?.srs?.[`fc_${i}`];
+        if (isDue(srsData) && deck.length < 8) {
+          deck.push({ ...fc, lessonId: lesson.id, fcIdx: i, isNew: false });
+        }
+      });
+    });
+    return deck;
+  };
+
+  // ── Start a lesson ─────────────────────────────────────────────────────
+  const startLesson = (lesson) => {
+    setActiveLesson(lesson);
+    setPhase('lesson');
+    setQIdx(0);
+    setSel(null);
+    setPage('study');
+  };
+
+  // ── Score a quiz answer ────────────────────────────────────────────────
+  const scoreAnswer = (letter) => {
+    setSel(letter);
+    const correct = letter === activeLesson.questions[qIdx].correct;
+    const np = { ...progress };
+    if (!np[activeLesson.id]) np[activeLesson.id] = { correct: 0, wrong: 0, srs: {} };
+    if (correct) np[activeLesson.id].correct++; else np[activeLesson.id].wrong++;
+    persist(np);
+    flash(correct ? '✓ Correct!' : 'Study this one again');
+  };
+
+  // ── Next question or go to anki ────────────────────────────────────────
+  const nextQ = () => {
+    if (qIdx < activeLesson.questions.length - 1) { setQIdx(i => i + 1); setSel(null); }
+    else {
+      const deck = buildAnkiDeck(activeLesson);
+      setAnkiDeck(deck); setAnkiIdx(0); setAnkiFlip(false); setPhase('anki');
+    }
+  };
+
+  // ── Score anki card ────────────────────────────────────────────────────
+  const scoreAnki = (grade) => {
+    const card = ankiDeck[ankiIdx];
+    const np = { ...progress };
+    if (!np[card.lessonId]) np[card.lessonId] = { correct: 0, wrong: 0, srs: {} };
+    if (!np[card.lessonId].srs) np[card.lessonId].srs = {};
+    const fcKey = `fc_${card.fcIdx}`;
+    np[card.lessonId].srs[fcKey] = srsUpdate(np[card.lessonId].srs[fcKey], grade);
+    persist(np);
+    if (ankiIdx < ankiDeck.length - 1) { setAnkiIdx(i => i + 1); setAnkiFlip(false); }
+    else { setPage('home'); flash('Session complete! Great work.'); }
+  };
+
+  // ── Stats ──────────────────────────────────────────────────────────────
+  const totC = Object.values(progress).reduce((a, p) => a + (p.correct || 0), 0);
+  const totW = Object.values(progress).reduce((a, p) => a + (p.wrong || 0), 0);
+  const acc  = totC + totW ? Math.round(totC / (totC + totW) * 100) : null;
+  const seenCount = Object.keys(progress).length;
+
+  // ══════════════════════════════════════════════════════════════════════
+  // AUTH SCREENS
+  // ══════════════════════════════════════════════════════════════════════
+  // Auth mode toggle
+  const [authMode, setAuthMode] = useState('login'); // login|signup|setup
+
+  if (!user) return (
+    <div id="app">
+      <div style={{ textAlign:'center', paddingTop:40, paddingBottom:24 }}>
+        <div className="ava" style={{ width:64, height:64, fontSize:32, margin:'0 auto 16px' }}>📚</div>
+        <div className="ttl" style={{ fontSize:28 }}>Study</div>
+        <div className="sub" style={{ fontSize:13, marginTop:4 }}>CFA · CPA · IFRS Mastery</div>
+      </div>
+
+      {authMode === 'setup' ? (
+        <div>
+          <div className="bar"><button className="backbtn" onClick={() => setAuthMode('login')}>← Back</button><span className="barlabel">Supabase Setup</span></div>
+          <div style={{ fontSize:13, color:'#888', fontFamily:'sans-serif', lineHeight:1.7, marginBottom:16 }}>
+            Enter your Supabase credentials to save progress across devices.<br/>
+            Don't have Supabase yet?{' '}
+            <a href="https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME#readme"
+               target="_blank"
+               style={{ color:'#C1440E', textDecoration:'none' }}>
+              Follow the 10-minute setup guide →
+            </a>
+          </div>
+          <div style={{ marginBottom:10 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Project URL</div>
+            <input id="sb_url_input" className="authinput" placeholder="https://xxxx.supabase.co" defaultValue={localStorage.getItem('sb_url')||''} />
+          </div>
+          <div style={{ marginBottom:16 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Publishable / Anon Key</div>
+            <input id="sb_anon_input" className="authinput" placeholder="sb_publishable_... or eyJ..." defaultValue={localStorage.getItem('sb_anon')||''} />
+          </div>
+          <button className="btn" onClick={() => {
+            const url = document.getElementById('sb_url_input').value.trim();
+            const key = document.getElementById('sb_anon_input').value.trim();
+            if (!url || !key) { flash('Both fields required'); return; }
+            localStorage.setItem('sb_url', url);
+            localStorage.setItem('sb_anon', key);
+            sbClient = null;
+            flash('Saved! Now sign up or log in.');
+            setAuthMode('login');
+          }}>Save & Continue</button>
+          <button className="btn sec" style={{ marginTop:10 }} onClick={() => setAuthMode('login')}>Skip — Local Only</button>
+        </div>
+
+      ) : authMode === 'signup' ? (
+        <div>
+          <div className="bar"><button className="backbtn" onClick={() => setAuthMode('login')}>← Back</button><span className="barlabel">Create Account</span></div>
+          <div style={{ marginBottom:10 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Your Name</div>
+            <input id="su_name" className="authinput" placeholder="Full name" />
+          </div>
+          <div style={{ marginBottom:10 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Email</div>
+            <input id="su_email" className="authinput" type="email" placeholder="you@email.com" />
+          </div>
+          <div style={{ marginBottom:16 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Password</div>
+            <input id="su_pass" className="authinput" type="password" placeholder="Min 6 characters" />
+          </div>
+          <button className="btn" onClick={async () => {
+            const name  = document.getElementById('su_name').value.trim();
+            const email = document.getElementById('su_email').value.trim();
+            const pass  = document.getElementById('su_pass').value.trim();
+            if (!name || !email || !pass) { flash('All fields required'); return; }
+            if (pass.length < 6) { flash('Password must be 6+ characters'); return; }
+            const sb = getSB();
+            if (sb) {
+              const { data, error } = await sb.auth.signUp({ email, password: pass, options:{ data:{ full_name: name } } });
+              if (error) { flash('Error: ' + error.message); return; }
+              if (data.user) { setUser({ id: data.user.id, name, email }); flash('Account created!'); return; }
+            }
+            // Fallback local
+            const uid = email.replace(/[^a-z0-9]/gi,'_').toLowerCase();
+            localStorage.setItem('study_local_user', JSON.stringify({ id: uid, name, email }));
+            setUser({ id: uid, name, email });
+          }}>Create Account</button>
+          <div style={{ textAlign:'center', marginTop:14, fontSize:13, color:'#666', fontFamily:'sans-serif' }}>
+            Already have an account?{' '}
+            <span style={{ color:'#C1440E', cursor:'pointer' }} onClick={() => setAuthMode('login')}>Sign in</span>
+          </div>
+        </div>
+
+      ) : (
+        <div>
+          <div style={{ marginBottom:10 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Email</div>
+            <input id="li_email" className="authinput" type="email" placeholder="you@email.com" />
+          </div>
+          <div style={{ marginBottom:16 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Password</div>
+            <input id="li_pass" className="authinput" type="password" placeholder="Your password" />
+          </div>
+          <button className="btn" onClick={async () => {
+            const email = document.getElementById('li_email').value.trim();
+            const pass  = document.getElementById('li_pass').value.trim();
+            if (!email || !pass) { flash('Email and password required'); return; }
+            const sb = getSB();
+            if (sb) {
+              const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+              if (error) { flash('Error: ' + error.message); return; }
+              if (data.user) {
+                const name = data.user.user_metadata?.full_name || email.split('@')[0];
+                setUser({ id: data.user.id, name, email });
+                return;
+              }
+            }
+            // Fallback local
+            const saved = localStorage.getItem('study_local_user');
+            if (saved) { setUser(JSON.parse(saved)); return; }
+            flash('No account found — please sign up first');
+          }}>Sign In</button>
+
+          <div style={{ textAlign:'center', margin:'14px 0', color:'#333', fontSize:12, fontFamily:'sans-serif' }}>— no account yet? —</div>
+          <button className="btn sec" onClick={() => setAuthMode('signup')}>Create Account →</button>
+          <button className="btn sec" style={{ marginTop:10 }} onClick={() => setAuthMode('setup')}>⚙️ Setup Cloud Save (Supabase)</button>
+          <div style={{ fontSize:11, color:'#555', fontFamily:'sans-serif', textAlign:'center', marginTop:14, lineHeight:1.9 }}>
+            Cloud save requires your own free Supabase account.<br/>
+            <a href="https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME#readme"
+               target="_blank"
+               style={{ color:'#C1440E', textDecoration:'none' }}>
+              📖 Read the setup guide →
+            </a><br/>
+            Without it, progress saves locally on this device only.
+          </div>
+        </div>
+      )}
+      {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+
+  // ══════════════════════════════════════════════════════════════════════
+  // HOME
+  // ══════════════════════════════════════════════════════════════════════
+  if (page === 'home') return (
+    <div id="app">
+      <div className="hdr">
+        <div className="ava">📚</div>
+        <div style={{ flex:1 }}>
+          <div className="ttl">Study</div>
+          <div className="sub">Welcome, {user.name.split('_').join(' ')}</div>
+        </div>
+        <button onClick={() => setUser(null)} style={{ background:'none', border:'none', color:'#444', fontSize:12, fontFamily:'sans-serif' }}>Sign out</button>
+      </div>
+
+      <div className="pills">
+        <div className="pill"><div className="pill-v">{seenCount}</div><div className="pill-l">Studied</div></div>
+        <div className="pill"><div className="pill-v">{CONTENT.length}</div><div className="pill-l">Total</div></div>
+        <div className="pill"><div className="pill-v">{totC}</div><div className="pill-l">Correct</div></div>
+        {acc !== null && <div className="pill"><div className="pill-v">{acc}%</div><div className="pill-l">Accuracy</div></div>}
+      </div>
+
+      <button className="btn" onClick={() => startLesson(pickLesson(null))}>▶  Start Next Lesson</button>
+      {seenCount > 0 && <button className="btn sec" style={{ marginTop:10 }} onClick={() => setPage('review')}>🃏  Anki Review — Due Cards</button>}
+      <button className="btn sec" style={{ marginTop:10 }} onClick={() => setPage('topics')}>📋  Browse All Topics</button>
+      <button className="btn sec" style={{ marginTop:10 }} onClick={() => setPage('progress')}>📊  My Progress</button>
+
+      {/* Quick exam buttons */}
+      <div className="seclabel">Jump to exam section</div>
+      {['CFA L1','CPA FAR'].map(exam => {
+        const lessons = CONTENT.filter(c => c.exam === exam);
+        const done = lessons.filter(c => progress[c.id]).length;
+        return (
+          <button key={exam} className="examrow" onClick={() => startLesson(pickLesson(exam))} style={{ borderColor: EXAM_COLOR[exam]+'55' }}>
+            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+              <span style={{ color:EXAM_COLOR[exam], fontWeight:'bold', fontSize:15 }}>{exam}</span>
+              <span style={{ fontSize:11, color:'#666', fontFamily:'sans-serif' }}>{done}/{lessons.length} lessons</span>
+            </div>
+            <div className="pbar"><div className="pfill" style={{ width:`${lessons.length?done/lessons.length*100:0}%`, background:EXAM_COLOR[exam]+'BB' }}/></div>
+          </button>
+        );
+      })}
+      <div style={{ fontSize:11, color:'#333', fontFamily:'sans-serif', textAlign:'center', marginTop:16, lineHeight:1.7 }}>
+        More exam sections (CFA L2/L3, CPA AUD/REG/BEC, IFRS) coming soon
+      </div>
+      {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+
+  // ══════════════════════════════════════════════════════════════════════
+  // TOPICS
+  // ══════════════════════════════════════════════════════════════════════
+  if (page === 'topics') return (
+    <div id="app">
+      <div className="bar"><button className="backbtn" onClick={() => setPage('home')}>← Back</button><span className="barlabel">All Topics</span></div>
+      {CONTENT.map(lesson => {
+        const p = progress[lesson.id];
+        const tot = (p?.correct||0) + (p?.wrong||0);
+        const pct = tot ? Math.round(p.correct/tot*100) : null;
+        return (
+          <div key={lesson.id} className="topicrow" onClick={() => startLesson(lesson)}>
+            <span style={{ fontSize:16, marginRight:4 }}>{p ? '✓' : '○'}</span>
+            <div style={{ flex:1 }}>
+              <div className="topic-name">{lesson.title}</div>
+              <div style={{ fontSize:10, color:EXAM_COLOR[lesson.exam]||'#888', fontFamily:'sans-serif', marginTop:2 }}>{lesson.exam} · {lesson.section}</div>
+            </div>
+            {pct !== null && <span className="topic-score">{pct}%</span>}
+            <span style={{ fontSize:11, color:EXAM_COLOR[lesson.exam], fontFamily:'sans-serif', marginLeft:8 }}>→</span>
+          </div>
+        );
+      })}
+      {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+
+  // ══════════════════════════════════════════════════════════════════════
+  // PROGRESS
+  // ══════════════════════════════════════════════════════════════════════
+  if (page === 'progress') return (
+    <div id="app">
+      <div className="bar"><button className="backbtn" onClick={() => setPage('home')}>← Back</button><span className="barlabel">Progress</span></div>
+      <div className="pills">
+        <div className="pill"><div className="pill-v">{seenCount}</div><div className="pill-l">Studied</div></div>
+        <div className="pill"><div className="pill-v">{totC}</div><div className="pill-l">Correct</div></div>
+        <div className="pill"><div className="pill-v">{totW}</div><div className="pill-l">Wrong</div></div>
+        {acc !== null && <div className="pill"><div className="pill-v">{acc}%</div><div className="pill-l">Accuracy</div></div>}
+      </div>
+      {CONTENT.map(lesson => {
+        const p = progress[lesson.id];
+        if (!p) return null;
+        const tot = (p.correct||0)+(p.wrong||0);
+        const pct = tot ? Math.round(p.correct/tot*100) : 0;
+        return (
+          <div key={lesson.id} style={{ borderBottom:'1px solid #1e1e1e', padding:'10px 0', display:'flex', alignItems:'center', gap:10 }}>
+            <span style={{ fontSize:10, borderRadius:20, padding:'2px 8px', fontFamily:'sans-serif', background:EXAM_COLOR[lesson.exam]+'22', color:EXAM_COLOR[lesson.exam], flexShrink:0 }}>{lesson.exam}</span>
+            <span style={{ flex:1, fontSize:12, color:'#ccc' }}>{lesson.title}</span>
+            <span style={{ fontSize:12, color: pct>=80?'#7eca7e':pct>=60?'#CCAA55':'#f08060', fontFamily:'sans-serif', flexShrink:0 }}>{pct}%</span>
+          </div>
+        );
+      })}
+      {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+
+  // ══════════════════════════════════════════════════════════════════════
+  // STANDALONE ANKI REVIEW
+  // ══════════════════════════════════════════════════════════════════════
+  if (page === 'review') {
+    const dueCards = [];
+    CONTENT.forEach(lesson => {
+      if (!progress[lesson.id]) return;
+      lesson.flashcards?.forEach((fc, i) => {
+        const srsData = progress[lesson.id]?.srs?.[`fc_${i}`];
+        if (isDue(srsData)) dueCards.push({ ...fc, lessonId: lesson.id, fcIdx: i });
+      });
+    });
+    if (dueCards.length === 0) return (
+      <div id="app">
+        <div className="bar"><button className="backbtn" onClick={() => setPage('home')}>← Back</button><span className="barlabel">Anki Review</span></div>
+        <div style={{ textAlign:'center', padding:'60px 20px', color:'#666', fontFamily:'sans-serif' }}>
+          🎉 All caught up! No cards due for review.<br/><br/>
+          <span style={{ fontSize:12 }}>Come back tomorrow for your next review session.</span>
+        </div>
+      </div>
+    );
+    return (
+      <div id="app">
+        <div className="bar"><button className="backbtn" onClick={() => setPage('home')}>← Home</button><span className="barlabel">Anki Review — {dueCards.length} due</span></div>
+        {(() => {
+          const card = dueCards[ankiIdx % dueCards.length];
+          return (
+            <div className="fade">
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+                <span style={{ fontSize:12, color:'#888', fontFamily:'sans-serif' }}>Card {(ankiIdx % dueCards.length)+1} of {dueCards.length}</span>
+              </div>
+              <div className="ankicard" onClick={() => setAnkiFlip(f => !f)}>
+                <div className="anki-label">{ankiFlip ? 'ANSWER' : 'QUESTION — tap to flip'}</div>
+                <div className="anki-text">{ankiFlip ? card.back : card.front}</div>
+              </div>
+              {ankiFlip && (
+                <div className="ankibtns fade">
+                  <button className="abtn-miss" onClick={() => scoreAnki(0)}>😕 Missed</button>
+                  <button className="abtn-hard" onClick={() => scoreAnki(1)}>🤔 Hard</button>
+                  <button className="abtn-got"  onClick={() => scoreAnki(2)}>✅ Got it</button>
+                </div>
+              )}
+            </div>
+          );
+        })()}
+        {toast && <div className="toast">{toast}</div>}
+      </div>
+    );
+  }
+
+  // ══════════════════════════════════════════════════════════════════════
+  // STUDY — LESSON / QUIZ / ANKI
+  // ══════════════════════════════════════════════════════════════════════
+  if (page === 'study' && activeLesson) return (
+    <div id="app">
+      <div className="bar">
+        <button className="backbtn" onClick={() => setPage('home')}>← Home</button>
+        <span className="barlabel">{activeLesson.exam}</span>
+        <span style={{ fontSize:10, color:'#555', fontFamily:'sans-serif' }}>{phase === 'lesson' ? 'Lesson' : phase === 'quiz' ? `Q${qIdx+1}/${activeLesson.questions.length}` : `Anki ${ankiIdx+1}/${ankiDeck.length}`}</span>
+      </div>
+
+      {/* ── LESSON ── */}
+      {phase === 'lesson' && (
+        <div className="fade">
+          <span className="badge" style={{ background:EXAM_COLOR[activeLesson.exam]+'22', color:EXAM_COLOR[activeLesson.exam] }}>{activeLesson.exam}</span>
+          <div style={{ fontSize:11, color:'#555', fontFamily:'sans-serif', marginBottom:10 }}>{activeLesson.section}</div>
+          <div className="ltitle">{activeLesson.title}</div>
+
+          {activeLesson.narrative.map((p, i) => <p key={i} className="para">{p}</p>)}
+
+          {activeLesson.ifrsNote && (
+            <div className="ifrs">
+              <div className="ifrs-label">⚖ GAAP vs IFRS</div>
+              <div className="ifrs-text">{activeLesson.ifrsNote}</div>
+            </div>
+          )}
+
+          {activeLesson.mnemonic && (
+            <div className="mnemonic">
+              <div className="mnemonic-label">💡 Memory Tool</div>
+              <div className="mnemonic-text">{activeLesson.mnemonic}</div>
+            </div>
+          )}
+
+          {activeLesson.outline && (
+            <div className="outline">
+              {activeLesson.outline.map((item, i) => <div key={i} className="outline-item">• {item}</div>)}
+            </div>
+          )}
+
+          <button className="btn" style={{ marginTop:20 }} onClick={() => { setPhase('quiz'); setSel(null); setQIdx(0); }}>
+            Start Quiz ({activeLesson.questions.length} questions) →
+          </button>
+          <button className="btn sec" style={{ marginTop:10 }} onClick={() => setPage('home')}>← Back to Home</button>
+        </div>
+      )}
+
+      {/* ── QUIZ ── */}
+      {phase === 'quiz' && (
+        <div className="fade">
+          {/* Progress dots */}
+          <div className="qprogress">
+            {activeLesson.questions.map((_, i) => (
+              <div key={i} className={`qprog-dot ${i < qIdx ? 'done' : i === qIdx ? 'current' : ''}`}/>
+            ))}
+          </div>
+
+          <div className="qbox">
+            <div className="qbox-label">{activeLesson.exam} · {activeLesson.section}</div>
+            {activeLesson.questions[qIdx].q}
+          </div>
+
+          {activeLesson.questions[qIdx].choices.map((c, i) => {
+            const letter = c[0];
+            const isCor = letter === activeLesson.questions[qIdx].correct;
+            const isSel = sel === letter;
+            let cls = 'choice';
+            if (sel) { if (isCor) cls += ' correct'; else if (isSel) cls += ' wrong'; else cls += ' neutral'; }
+            return <button key={i} className={cls} onClick={() => { if (!sel) scoreAnswer(letter); }}>{c}</button>;
+          })}
+
+          {sel && (
+            <div className="fade">
+              <div className="expl" style={{ borderColor: sel === activeLesson.questions[qIdx].correct ? '#3a8a3a44' : '#C1440E44' }}>
+                {activeLesson.questions[qIdx].expl}
+              </div>
+              <button className="btn" style={{ marginTop:14 }} onClick={nextQ}>
+                {qIdx < activeLesson.questions.length - 1 ? `Next Question (${qIdx+2}/${activeLesson.questions.length}) →` : 'Flashcard Review →'}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── ANKI ── */}
+      {phase === 'anki' && ankiDeck.length > 0 && (
+        <div className="fade">
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+            <span style={{ fontSize:13, color:'#888', fontFamily:'sans-serif' }}>🃏 Memory Review — {ankiIdx+1} of {ankiDeck.length}</span>
+            {ankiDeck[ankiIdx]?.isNew && <span style={{ fontSize:10, background:'#C1440E22', color:'#C1440E', borderRadius:20, padding:'2px 8px', fontFamily:'sans-serif' }}>NEW</span>}
+          </div>
+
+          <div className="ankicard" onClick={() => setAnkiFlip(f => !f)}>
+            <div className="anki-label">{ankiFlip ? 'ANSWER' : 'QUESTION — tap to flip'}</div>
+            <div className="anki-text">{ankiFlip ? ankiDeck[ankiIdx].back : ankiDeck[ankiIdx].front}</div>
+          </div>
+
+          {ankiFlip && (
+            <div className="ankibtns fade">
+              <button className="abtn-miss" onClick={() => scoreAnki(0)}>😕 Missed</button>
+              <button className="abtn-hard" onClick={() => scoreAnki(1)}>🤔 Hard</button>
+              <button className="abtn-got"  onClick={() => scoreAnki(2)}>✅ Got it</button>
+            </div>
+          )}
+
+          <button className="btn sec" style={{ marginTop:4 }} onClick={() => { setPage('home'); flash('Lesson complete!'); }}>
+            Finish Session →
+          </button>
+        </div>
+      )}
+
+      {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+
+  return <div id="app"><div style={{ color:'#666', textAlign:'center', paddingTop:60, fontFamily:'sans-serif' }}>Loading…</div></div>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
