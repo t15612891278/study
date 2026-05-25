@@ -613,64 +613,121 @@ function App() {
   // ══════════════════════════════════════════════════════════════════════
   // AUTH SCREENS
   // ══════════════════════════════════════════════════════════════════════
+  // Auth mode toggle
+  const [authMode, setAuthMode] = useState('login'); // login|signup|setup
+
   if (!user) return (
     <div id="app">
-      <div style={{ textAlign:'center', paddingTop:40, paddingBottom:20 }}>
+      <div style={{ textAlign:'center', paddingTop:40, paddingBottom:24 }}>
         <div className="ava" style={{ width:64, height:64, fontSize:32, margin:'0 auto 16px' }}>📚</div>
         <div className="ttl" style={{ fontSize:28 }}>Study</div>
-        <div className="sub" style={{ fontSize:13, marginTop:4 }}>CFA L1·L2·L3 · CPA FAR·AUD·REG·BEC · IFRS</div>
+        <div className="sub" style={{ fontSize:13, marginTop:4 }}>CFA · CPA · IFRS Mastery</div>
       </div>
 
-      {authPage === 'supabase_setup' ? (
+      {authMode === 'setup' ? (
         <div>
-          <div className="bar"><button className="backbtn" onClick={() => setAuthPage('login')}>← Back</button><span className="barlabel">Supabase Setup</span></div>
-          <div style={{ fontSize:13, color:'#888', fontFamily:'sans-serif', lineHeight:1.7, marginBottom:20 }}>
-            To save progress across devices, enter your Supabase project credentials.<br/>
-            Get these from <span style={{ color:'#C1440E' }}>supabase.com</span> → your project → Settings → API.<br/>
-            Skip this to use local storage only.
+          <div className="bar"><button className="backbtn" onClick={() => setAuthMode('login')}>← Back</button><span className="barlabel">Supabase Setup</span></div>
+          <div style={{ fontSize:13, color:'#888', fontFamily:'sans-serif', lineHeight:1.7, marginBottom:16 }}>
+            Enter your Supabase credentials to save progress across devices and share with friends.<br/>
+            Get these from <span style={{ color:'#C1440E' }}>supabase.com</span> → Settings → API.
           </div>
-          <div style={{ marginBottom:12 }}>
+          <div style={{ marginBottom:10 }}>
             <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Project URL</div>
             <input id="sb_url_input" className="authinput" placeholder="https://xxxx.supabase.co" defaultValue={localStorage.getItem('sb_url')||''} />
           </div>
-          <div style={{ marginBottom:20 }}>
-            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Anon/Public Key</div>
-            <input id="sb_anon_input" className="authinput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." defaultValue={localStorage.getItem('sb_anon')||''} />
+          <div style={{ marginBottom:16 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Publishable / Anon Key</div>
+            <input id="sb_anon_input" className="authinput" placeholder="sb_publishable_... or eyJ..." defaultValue={localStorage.getItem('sb_anon')||''} />
           </div>
           <button className="btn" onClick={() => {
             const url = document.getElementById('sb_url_input').value.trim();
             const key = document.getElementById('sb_anon_input').value.trim();
-            localStorage.setItem('sb_url', url); localStorage.setItem('sb_anon', key);
-            sbClient = null; flash('Supabase configured!'); setAuthPage('login');
-          }}>Save Supabase Config</button>
-          <button className="btn sec" style={{ marginTop:10 }} onClick={() => setAuthPage('login')}>Skip — Use Local Storage</button>
+            if (!url || !key) { flash('Both fields required'); return; }
+            localStorage.setItem('sb_url', url);
+            localStorage.setItem('sb_anon', key);
+            sbClient = null;
+            flash('Saved! Now sign up or log in.');
+            setAuthMode('login');
+          }}>Save & Continue</button>
+          <button className="btn sec" style={{ marginTop:10 }} onClick={() => setAuthMode('login')}>Skip — Local Only</button>
         </div>
-      ) : authPage === 'login' ? (
+
+      ) : authMode === 'signup' ? (
         <div>
-          {getSB() ? (
-            <>
-              <button className="btn blue" onClick={async () => {
-                const sb = getSB();
-                await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: window.location.href } });
-              }}>Sign in with Google</button>
-              <div style={{ textAlign:'center', margin:'16px 0', color:'#444', fontSize:12, fontFamily:'sans-serif' }}>— or —</div>
-            </>
-          ) : null}
-          <div style={{ marginBottom:12 }}>
-            <input id="login_name" className="authinput" placeholder="Your name" />
+          <div className="bar"><button className="backbtn" onClick={() => setAuthMode('login')}>← Back</button><span className="barlabel">Create Account</span></div>
+          <div style={{ marginBottom:10 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Your Name</div>
+            <input id="su_name" className="authinput" placeholder="Full name" />
           </div>
-          <button className="btn" onClick={() => {
-            const name = document.getElementById('login_name').value.trim();
-            if (!name) { flash('Please enter your name'); return; }
-            const uid = name.toLowerCase().replace(/\s+/g,'_');
-            setUser({ id: uid, name, email: null });
-          }}>Start Studying (Local)</button>
-          <button className="btn sec" style={{ marginTop:10 }} onClick={() => setAuthPage('supabase_setup')}>⚙️ Setup Cloud Save (Supabase)</button>
-          <div style={{ fontSize:11, color:'#333', fontFamily:'sans-serif', textAlign:'center', marginTop:16, lineHeight:1.7 }}>
-            Cloud save requires a free Supabase account.<br/>Local mode saves progress on this device only.
+          <div style={{ marginBottom:10 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Email</div>
+            <input id="su_email" className="authinput" type="email" placeholder="you@email.com" />
+          </div>
+          <div style={{ marginBottom:16 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Password</div>
+            <input id="su_pass" className="authinput" type="password" placeholder="Min 6 characters" />
+          </div>
+          <button className="btn" onClick={async () => {
+            const name  = document.getElementById('su_name').value.trim();
+            const email = document.getElementById('su_email').value.trim();
+            const pass  = document.getElementById('su_pass').value.trim();
+            if (!name || !email || !pass) { flash('All fields required'); return; }
+            if (pass.length < 6) { flash('Password must be 6+ characters'); return; }
+            const sb = getSB();
+            if (sb) {
+              const { data, error } = await sb.auth.signUp({ email, password: pass, options:{ data:{ full_name: name } } });
+              if (error) { flash('Error: ' + error.message); return; }
+              if (data.user) { setUser({ id: data.user.id, name, email }); flash('Account created!'); return; }
+            }
+            // Fallback local
+            const uid = email.replace(/[^a-z0-9]/gi,'_').toLowerCase();
+            localStorage.setItem('study_local_user', JSON.stringify({ id: uid, name, email }));
+            setUser({ id: uid, name, email });
+          }}>Create Account</button>
+          <div style={{ textAlign:'center', marginTop:14, fontSize:13, color:'#666', fontFamily:'sans-serif' }}>
+            Already have an account?{' '}
+            <span style={{ color:'#C1440E', cursor:'pointer' }} onClick={() => setAuthMode('login')}>Sign in</span>
           </div>
         </div>
-      ) : null}
+
+      ) : (
+        <div>
+          <div style={{ marginBottom:10 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Email</div>
+            <input id="li_email" className="authinput" type="email" placeholder="you@email.com" />
+          </div>
+          <div style={{ marginBottom:16 }}>
+            <div style={{ fontSize:11, color:'#666', fontFamily:'sans-serif', marginBottom:4 }}>Password</div>
+            <input id="li_pass" className="authinput" type="password" placeholder="Your password" />
+          </div>
+          <button className="btn" onClick={async () => {
+            const email = document.getElementById('li_email').value.trim();
+            const pass  = document.getElementById('li_pass').value.trim();
+            if (!email || !pass) { flash('Email and password required'); return; }
+            const sb = getSB();
+            if (sb) {
+              const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+              if (error) { flash('Error: ' + error.message); return; }
+              if (data.user) {
+                const name = data.user.user_metadata?.full_name || email.split('@')[0];
+                setUser({ id: data.user.id, name, email });
+                return;
+              }
+            }
+            // Fallback local
+            const saved = localStorage.getItem('study_local_user');
+            if (saved) { setUser(JSON.parse(saved)); return; }
+            flash('No account found — please sign up first');
+          }}>Sign In</button>
+
+          <div style={{ textAlign:'center', margin:'14px 0', color:'#333', fontSize:12, fontFamily:'sans-serif' }}>— no account yet? —</div>
+          <button className="btn sec" onClick={() => setAuthMode('signup')}>Create Account →</button>
+          <button className="btn sec" style={{ marginTop:10 }} onClick={() => setAuthMode('setup')}>⚙️ Supabase Setup</button>
+          <div style={{ fontSize:11, color:'#333', fontFamily:'sans-serif', textAlign:'center', marginTop:14, lineHeight:1.7 }}>
+            Supabase saves progress across all your devices.<br/>Without it, progress saves locally on this device only.
+          </div>
+        </div>
+      )}
       {toast && <div className="toast">{toast}</div>}
     </div>
   );
